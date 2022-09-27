@@ -1,0 +1,743 @@
+<!doctype html>
+{% load static %}
+{% load humanize %}
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/css.css' %}" />
+
+    <link rel="stylesheet" href="../tools/css/">
+    <style>
+        .page{
+            
+        }
+        .item{
+            width: 100%;
+            display: flex;
+            margin-top: 0.3cm;
+        }
+        .item .label{
+            width: 40%;
+        }
+        .item .value{
+            font-weight: bold;
+        }
+        
+        tr td:last-child{
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+  <body class="page">
+    
+    <div class="">
+        <div class="container p-4 bg-primary">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="h1  text-center">
+                        <strong> Demandeur Tiomela </strong>
+                    </h1>
+                </div>
+            </div>
+
+            <div class="card my-3">
+                <div class="card-header">
+                    Informaions
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Type de paiement </td>        
+                                <td> {{demandeur.Type_paiement}} </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Civilité </td>        
+                                <td>
+                                    {% if demandeur.Civilite == 'M' %} Monsieur {% elif demandeur.Civilite == 'Mme' %}Madame{% else %} Mademoiselle{% endif %}
+                                    </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Satut Matrimonial </td>        
+                                <td>
+
+                                    {% if demandeur.Situation_famille == 'MA' %} Marié(e) {% elif demandeur.Situation_famille == 'VE' %} Veuf(ve){% else %} Célibataire{% endif %} </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Mombre de piéces jointes  </td>        
+                                <td>
+
+                                 {{demandeur.getPieceNumber}} 
+                                 
+                                </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                    
+
+                    
+
+                </div>
+            </div>
+            <br>
+            <div class="card my-3">
+                <div class="card-header">
+                    Demandeur
+                    <hr>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Numéro </td>        
+                                <td>
+
+                                    {{demandeur.Tel |intcomma}}</div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Adresse E-mail </td>        
+                                <td>
+
+                                    {{demandeur.Email}} </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Nom  </td>        
+                                <td>
+
+                                    {{demandeur.Noms_demandeur}}</div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Prénoms(s)  </td>        
+                                <td>
+
+                                    {{demandeur.Prenom_demandeur}}
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Date de naissance  </td>        
+                                <td>
+
+                                    {{demandeur.Date_de_naissance}} </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Lieu de naissance</td>        
+                                <td>
+
+                                    {{demandeur.Lieu_de_Naissance}} </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Ville d'origine  </td>        
+                                <td>
+
+                                    {{demandeur.Ville_origine}}</div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Statut de la demande  </td>        
+                                <td>
+                                    {% if demandeur.Statut == "A" %} Temporaire {% else %} Confirmé{% endif %}
+                                     </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Profession  </td>        
+                                <td>
+
+                                    {{demandeur.Profession}}</div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Employeur  </td>        
+                                <td>
+
+                                    {{demandeur.Employeur}} </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Adresse  </td>        
+                                <td>
+
+                                    {{demandeur.Adresse}} </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>N° CNI  </td>        
+                                <td>
+
+                                    {{demandeur.Numero_identite |default:''}} </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> N° Compte Bancaire  </td>        
+                                <td>
+
+                                    {{demandeur.Numero_compte_bancaire | default:''}} </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Banque  </td>        
+                                <td>
+
+                                    {{demandeur.Nom_banque |default:''}} </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Source du revuenu </td>        
+                                <td>
+
+                                    {% if demandeur.Revenu_homme.Nature == "S" %}Salire{% else %}Autre{% endif %} </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Montant</td>        
+                                <td>
+
+                                    {{demandeur.Revenu_homme.Montant}} Fcfa </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card my-3">
+                <br>
+
+                <div class="card-header">
+                    Conjoint de vie
+                </div>
+                <hr>
+                {% if not demandeur.Conjoint_vie %}     Pas de conjoint de vie
+                
+                {% else %}
+                <br>
+               
+
+               
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Nom(s)  ET Prénom(s)</td>        
+                                <td>
+
+                                 TSAPI DAMARIS </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Date de naissance  </td>        
+                                <td>
+
+                                 1er OCTOBRE 1980 </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Lieu de naissance</td>        
+                                <td>
+
+                                 Yaoundé </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Ville d'origine  </td>        
+                                <td>
+
+                                 Bafoussam </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Profession</td>        
+                                <td>
+
+                                 ARCHITECTE </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Adresse Employeur  </td>        
+                                <td>
+
+                                 à son compte </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> N° CNI</td>        
+                                <td>
+
+                                 21252588 </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>N° Compte Bancaire  </td>        
+                                <td>
+
+                                 78484848 </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Banque</td>        
+                                <td>
+
+                                 CBC </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Source du revuenu </td>        
+                                <td>
+
+                                 Salaire </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Montant</td>        
+                                <td>
+
+                                 450 000 Fcfa </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+            </div>
+
+            <div class="card my-3">
+                <div class="card-header">
+                   <strong>  Enfant légitime </strong>
+                </div>
+                <div class="card-body">
+                {% if not demandeur.Enfant_leg %}     Pas d'enfant légitime
+                
+                    {% else %}
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Nom(s)  ET Prénom(s)</td>        
+                                <td>
+
+                                 TSAPI DAMARIS </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Date de naissance  </td>        
+                                <td>
+
+                                 1er OCTOBRE 1980 </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Lieu de naissance</td>        
+                                <td>
+
+                                 Yaoundé </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Sexe  </td>        
+                                <td>
+
+                                 Masculin </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Profession / Niveau scolaire</td>        
+                                <td>
+
+                                  Eleve ingenieur </div>
+                                    </td>      
+                            </tr>
+                            </table>
+                        </div>
+
+                        
+
+                </div>
+
+                {% endif %}
+            </div>
+
+            </div>
+            <div class="card my-3">
+                <div class="card-header">
+                    Engengements
+                </div>
+                <div class="card-body">
+                    <strong> Engamement Bancaire</strong>
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Banque</td>        
+                                <td>
+
+                                 CBC </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Montant  </td>        
+                                <td>
+
+                                 370 000 Fcfa </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Date de fin</td>        
+                                <td>
+
+                                 14 Août 2023 </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Profession</td>        
+                                <td>
+
+                                 ARCHITECTE </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Adresse Employeur  </td>        
+                                <td>
+
+                                 à son compte </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> N° CNI</td>        
+                                <td>
+
+                                 21252588 </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>N° Compte Bancaire  </td>        
+                                <td>
+
+                                 78484848 </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Banque</td>        
+                                <td>
+
+                                 CBC </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td> Source du revuenu </td>        
+                                <td>
+
+                                 Salaire </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-6">
+                            <table>
+                                <tr>
+                                <td>Montant</td>        
+                                <td>
+
+                                 450 000 Fcfa </div>
+                                    </td>      
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            
+            
+        </div>
+    </div>
+   
+</body>
+</html>

@@ -1,0 +1,552 @@
+{% extends 'base2.html' %}
+
+{% load static %}
+{% block title %}  
+    MINHDU | Statistiques
+{% endblock title %}
+{% block styles %}
+
+<link rel="stylesheet" href="{% static 'css/my_dashnord.css'%} ">
+<script>
+    
+</script>
+
+    <style>
+        .element{
+            display: flex;
+            height: 70px;
+        }
+        .element .font{
+            width: 80px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            color: rgba(6, 5, 5, 0.621);
+        }
+        .element .value{
+            display: flex;
+            height: 100%;
+            align-items: center;
+            padding-left: 15px;
+            justify-content: space-around;
+            width: 80%;
+        }
+        .val{
+           
+            color: orangered;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .text{
+            width: 60%;
+        }
+
+        @media screen and (max-width:1200px) {
+            .element .font{
+                display: none;
+            }
+        }
+
+        @media screen and (max-width:700px) {
+            .element .font{
+                display: flex;
+            }
+        }
+
+
+        .dashbord{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .dash-item{
+            width: 25%;
+        }
+        .dash-element{
+            display: flex;
+            padding: 10px;
+            margin: auto;
+            width: 95%;
+            background-color: rgb(255, 255, 255);
+            margin-bottom: 30px;
+            box-shadow: 0px 0px 6px rgba(81, 81, 81, 0.568);
+            border-radius: 3px;
+            height: 80px;
+            align-items: center;
+        }
+        .dash-element .dash-icon{
+            width: 28%;
+            border-radius: 7px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            height: 100%;
+            background-color: white;
+            color: black;
+           
+        }
+        .dash-element .dash-icon i{
+          opacity: 1;
+          
+        }
+        .dash-element .dash-text{
+            margin-left: 5px;
+            width: 60%;
+            color: white;
+            font-size: 15px;
+        }
+        .dash-element .values{
+          float: right;
+          font-size: 30px;
+          color: white;
+          font-weight: bold;
+        }
+        @media all and (max-width:1200px){
+            .dash-item{
+                width: 33.33%;
+            }
+            .dash-element .values{
+                font-size: 20px;
+              }
+        }
+        @media all and (max-width:800px){
+            .dash-item{
+                width: 50%;
+            }
+
+            .dash-element .values{
+                font-size: 20px;
+              }
+        }
+    
+        @media all and (max-width:576px){
+            .dash-item{
+                width: 100%;
+            }
+            .dash-element .values{
+                font-size: 40px;
+              }
+        }
+        .bg-violet{
+            background-color: blueviolet;
+            color: white;
+
+        }
+        .bg-magenta{
+            background-color: magenta;
+            color: white;
+        }
+
+        .dash-item{
+            animation: rotate 1.5s;
+        }
+
+        @keyframes rotate {
+            from{
+                transform: rotateX(700deg) translateY(-300px);
+
+            }
+            to{
+                transform: rotateX(initial) translateY(initial);
+            }
+        }
+        
+    </style> 
+{% endblock styles %}
+{% block content %}
+    <div class="container my-4">
+        
+        <div class="dashbord">
+            <div class="dash-item">
+                <div class="dash-element bg-primary">
+                    <div class="dash-icon ">
+                        <i class="fa fa-pen" aria-hidden="true"></i>
+                    </div>
+                    <div class="dash-text">
+                        Décisions
+                    </div>
+                    <div class="values">
+                        {{nbdecision}}
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="dash-item">
+                <div class="dash-element bg-warning">
+                    <div class="dash-icon ">
+                        <i class="fa fa-question" aria-hidden="true"></i>
+                    </div>
+                    <div class="dash-text">
+                        Non Traités
+                    </div>
+                    <div class="values">
+                         {{nb_nom_traite}}                           
+                    </div>
+                </div>
+            </div>
+            <div class="dash-item">
+                <div class="dash-element bg-success">
+                    <div class="dash-icon ">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                    </div>
+                    <div class="dash-text">
+                        Accordées
+                    </div>
+                    <div class="values">  {{nb_accorde}} </div>
+                </div>
+            </div>
+            <div class="dash-item">
+                <div class="dash-element bg-danger">
+                    <div class="dash-icon ">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </div>
+                    <div class="dash-text">
+                        Refusées
+                    </div>
+                    <div class="values">
+                        {{nb_nom_accorde}}
+                    </div>
+                </div>
+            </div>
+            <div class="dash-item">
+                <div class="dash-element bg-violet">
+                    <div class="dash-icon ">
+                        <i class="fa fa-building" aria-hidden="true"></i>
+                    </div>
+                    <div class="dash-text">
+                        Logements
+                    </div>
+                    <div class="values">
+                        {{nblogement}}
+                    </div>
+                </div>
+            </div>
+            <div class="dash-item">
+                <div class="dash-element bg-magenta">
+                    <div class="dash-icon ">
+                        <i class="fa fa-building-user" aria-hidden="true"></i>
+                    </div>
+                    <div class="dash-text">
+                        Immeubles
+                    </div>
+                    <div class="values">
+                        {{nbappimme}}
+                    </div>
+                </div>
+            </div>
+            <div class="dash-item">
+                <div class="dash-element bg-dark">
+                    <div class="dash-icon ">
+                        <i class="fa fa-house" aria-hidden="true"></i>
+                    </div>
+                    <div class="dash-text">
+                        Appartements
+                    </div>
+                    <div class="values">
+                        {{nbappart}}
+                    </div>
+                </div>
+            </div>
+            <div class="dash-item">
+                <div class="dash-element bg-info">
+                    <div class="dash-icon ">
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                    </div>
+                    <div class="dash-text">
+                        Demandes
+                    </div>
+                    <div class="values">
+                        {{nbdemandeur}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="grappers_list">
+                <div class="grappers">
+                    <div class="logo bg-danger">
+                        <i class="fas fa-warehouse    "></i>
+                    </div>
+                    <div class="header">
+                        <p>Appartements libres</p>
+                        <div class="val">{{nbappart_libre}}</div>
+                    </div>
+                    <div class="footer">
+                        <a href="" class='a'>Voir plus <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> </a>
+                    </div>
+                </div>
+
+                <div class="grappers">
+                    <div class="logo bg-dark">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                    </div>
+                    <div class="header">
+                        <p>Appartements occupés</p>
+                        <div class="val">{{nbappart_occupe}}</div>
+                    </div>
+                    <div class="footer">
+                        <a href="" class='a'>Voir plus <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> </a>
+                    </div>
+                </div>
+
+                <div class="grappers">
+                    <div class="logo bg-success">
+                        <i class="fas fa-tachometer-alt-average"></i>
+                    </div>
+                    <div class="header">
+                        <p>Dégré d'ocupation général</p>
+                        <div class="val">{{porcentage_occupation}}%</div>
+                    </div>
+                    <div class="footer">
+                        <a href="" class='a'>Voir plus <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card mt-5">
+            <div class="card-body">
+                <div class="row">
+                    
+                    <div class="col-md-6 my-5">
+                        <canvas id="myChart" height="200"></canvas>
+                    </div>
+                    <div class="col-md-6 my-5">
+                        <canvas id="element1" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="mt-5">
+    <div class="my-2">
+        <div class="scalfolds_list ">
+            <div class="scafold-item">
+                <div class="header"></div>
+                <div class="logo bg-success"> <i class="fa fa-users" aria-hidden="true"></i> </div>
+                <div class="content">
+                    <canvas id="element2"></canvas>
+                </div>
+            </div>
+
+            <div class="scafold-item">
+                <div class="header"></div>
+                <div class="logo bg-info"> <i class="fa fa-users" aria-hidden="true"></i> </div>
+                <div class="content">
+                    <canvas id="element3"></canvas>
+                </div>
+            </div>
+            <div class="scafold-item">
+                <div class="header"></div>
+                <div class="logo bg-danger"> <i class="fa fa-users" aria-hidden="true"></i> </div>
+                <div class="content">
+                    <canvas id="element4"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/chart.min.js' %}"></script>
+    <script src="{% static 'js/jquery-3.js' %}"></script>
+
+    <script>
+        
+        const ctx = document.getElementById('myChart').getContext('2d');
+       
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [{% for data in allv %} '{{data.Ville}}' , {% endfor %}  ],
+                datasets: [{
+                    label: 'Logements par ville',
+                    data: [{% for data in allv %} '{{data.total}}' , {% endfor %}  ],
+                    backgroundColor: [
+                    'rgba(255, 99, 132, 0.7 )',
+                    'rgba(54, 162, 235, 0.7 )',
+                    'rgba(255, 206, 86, 0.7 )',
+                    'rgba(75, 192, 192, 0.7 )',
+                    'rgba(153, 102, 255, 0.7 )',
+                    'rgba(255, 159, 64, 0.7 )'
+                        
+                    ],
+                    
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1,
+                    
+                }]
+            },
+            options: {
+                title:{
+                    display:true,
+                    text:"Chart.js Bar Chart - Stacked"
+                },
+                tooltips: {
+                    mode: 'label'
+                },
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                    }],
+                    yAxes: [
+                    {
+                        ticks: {
+                            callback: function(label, index, labels) {
+                                return label/1000+'k';
+                            }
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: '1k = 1000'
+                        }
+                    }
+                ]
+                },
+                
+            }
+        });
+    </script>
+
+
+{% comment %} Tiomelachart  {% endcomment %}
+
+
+
+        <script>
+            var count = document.querySelectorAll('.compteur');
+            for(let i = 0; i < count.length; i++){
+                element = count[i];
+                var debut = parseInt(element.dataset.debut);
+                var fin = parseInt(element.dataset.fin);
+                fin = fin +200;
+                var delay = parseFloatn(element.dataset.delay);
+                function counter() {
+                    element.innerHTML= debut;
+                    debut = debut + 1;
+                    if(debut == fin){
+                        clearInterval(timer);
+                    }
+                  }
+                  var timer=setInterval("counter()", delay);
+                
+            
+                
+            }
+        </script>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    var all_dash_item = document.querySelectorAll('.dash-item');
+    var delay = 0.5;
+    for(let i = 0; i < all_dash_item.length; i ++){
+        var element = all_dash_item[i];
+        element.style.animationDuration = delay+'s';
+        delay = delay+ 0.5;
+    }   
+</script>
+
+<script>
+        
+const ctx2 = document.getElementById('element1').getContext('2d');
+const myChart2 = new Chart(ctx2, {
+    type: 'line',
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
+
+
+<script>
+    var ctx_id = 2;
+    const ty = ['bar', 'bar', 'bar', 'line', 'doughnut']
+    for(let i = 2; i <= 4; i++){
+    var ctx3 = document.getElementById('element'+i).getContext('2d');
+    const myChart3 = new Chart(ctx3, {
+        type: ty[i],
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+}
+</script>
+
+<script src="{% static 'js/dash.js' %}"></script>
+
+
+{% endblock scripts %}

@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <style>
+        .card-p{
+            background-color: rgba(255, 255, 255, 0.486);
+        }
+        .mb-3p{
+            
+            font-weight: bold;
+        }
+        span.tec{
+            font-size: 70px;
+        }
+        .user{
+            font-size: 100px;
+            max-height: 10px;
+            transform: translateX(40%) translateY(-70px);
+            
+        }
+    </style>
+    <div class="container  mt-5 p-5">
+      <div class="row justify-content-center">
+            <div class="card col-md-6 col-sm-12 {% if form.errors %} {% else %} formulaire {% endif %}">
+                <div class="card-header">
+                    <div class="row justify-content-center mb-3">
+                        <strong> <h4 class="text-success text-center my-3"> <div class="text-primary"> <span class="text-success tec">S</span>ocials <span class="tec">H</span><span class="text-success">ousings</span>  </div> </h4> </strong>
+                    </div>
+                </div>
+                <div class="user">
+                    <i class="fas fa-user-lock"></i>
+                </div>
+                <div class="card-body card-p">
+                    
+                        <form  method="post" novalidate autocomplete="off">
+                           
+                            {% csrf_token %}
+                          
+                              
+                                
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        Saisissez un nom d’utilisateur et un mot de passe valides. Remarquez que chacun de ces champs est sensible à la casse (différenciation des majuscules/minuscules).
+                                    </div>
+                                    {% endif %}
+                                
+                              
+                            
+                           <div class="mb-2 mt-1">
+                                <div class="mb-3p">
+                                    {{ form.username|as_crispy_field}}
+                                    <i class="icopp fas fa-user"></i>
+                                </div>
+                           </div>
+
+                            <div class="mb-3">
+                                <div class="mb-3p">
+                                    {{ form.password|as_crispy_field}}
+                                    <i class=" icopp fa fa-lock" aria-hidden="true"></i>
+                                    
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-5" id="check"> Se Connecter</button>
+                            <br>
+                           <div class="d-flex justify-content-end">
+                            <a href="" class="">Mot de passe oublié ? Réenitialiser</a>
+                           </div>
+                        </form>
+                    
+                </div>
+            </div>
+      </div>
+    </div>
+
+    <div class="loader" id="loader">
+        <div class="cont">
+            <div class="spinner-border text-success" role="status">
+            </div>
+            <span class="ml-2">  Chargement...</span>
+        </div>
+    </div>
+    <script>
+        var check = document.getElementById('check');
+        var loader = document.getElementById('loader');
+        check.onclick = function(){
+            loader.style.display = "flex";
+        }
+    </script>
+    <script>
+        document.getElementById('id_username').placeholder = 'votre nom d\'utilisateur';
+        document.getElementById('id_password').placeholder = 'votre mot de passe';
+    </script>
+
+
+    
+    
+
+{% endblock content %}

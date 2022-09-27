@@ -1,0 +1,308 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>  {% block title %}  {% endblock %} </title>
+    <!-- Font Awesome -->
+       <!-- MDB -->
+       
+       <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}" />
+   
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'fontAwesone/css/all.min.css' %}" />
+    
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet"
+      href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/Datatables/datatables.min.css' %}" />
+    <!-- Theme style -->
+    
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/toastr/toastr.min.css' %}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet"
+      href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/Datatables/datatables.min.css' %}" />
+    <!-- Theme style -->
+    <link
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
+    rel="stylesheet">
+    <style>
+      .bg-pperso{
+        background-color: rgba(22, 28, 37, 0.804);
+        color: white;
+      }
+
+      .bg-pperso2{
+        background-color: rgba(14, 24, 39, 0);
+        color: white;
+      }
+
+      select.form-control-sm{
+        padding: 0 22px ;
+        
+        
+      }
+      .log{
+        transform: scale(2.5);
+        margin-left: calc(30px);
+      }
+      
+    </style>
+    {% block styles %}  {% endblock %}
+</head>
+<body>
+    <!--Main Navigation-->
+<header >
+  <!-- Sidebar -->
+  <nav
+       id="sidebarMenu"
+       class="collapse d-lg-block sidebar collapse bg-ligth  bg-pperso my-3"
+       >
+    <div class="position-sticky">
+      <div class="list-group list-group-flush mx-3 mt-4 ">
+      
+        
+        
+        <!-- Home  -->
+        {% if home %} 
+
+        <a
+           href="{% url 'cfc_home' %}"
+           class="list-group-item bg-pperso2 list-group-item-action py-2 ripple active">
+           <i class="fa fa-book me-3 fa-fw me-3" aria-hidden="true"></i></i> <span>Demandes</span>
+        </a>
+        {% else %}
+
+
+        <a
+        href="{% url 'cfc_home' %}"
+        class="list-group-item bg-pperso2 list-group-item-action py-2 ripple">
+        <i class="fa fa-book fa-fw me-3" aria-hidden="true"></i></i><span>Demandes</span>
+     </a>
+      {% endif %}
+
+      {% if fav %} 
+
+        <a
+           href="{% url 'cfc_favorable' %}"
+           class="list-group-item bg-pperso2 list-group-item-action py-2 ripple active ">
+           <i class="fa fa-book me-3 fa-fw me-3" aria-hidden="true"></i></i> <span>Favorables</span>
+        </a>
+        {% else %}
+
+
+        <a
+        href="{% url 'cfc_favorable' %}"
+        class="list-group-item bg-pperso2 list-group-item-action py-2 ripple text-success">
+        <i class="fa fa-book fa-fw me-3" aria-hidden="true"></i></i><span>Favorables</span>
+     </a>
+     
+     {% endif %}
+
+     {% if nfav %} 
+
+        <a
+           href="{% url 'cfc_nom_favorable' %}"
+           class="list-group-item bg-pperso2 list-group-item-action py-2 ripple active">
+           <i class="fa fa-book me-3 fa-fw me-3" aria-hidden="true"></i></i> <span>Non Favorables</span>
+        </a>
+        {% else %}
+
+
+        <a
+        href="{% url 'cfc_nom_favorable' %}"
+        class="list-group-item bg-pperso2 list-group-item-action py-2 ripple text-danger">
+        <i class="fa fa-book fa-fw me-3" aria-hidden="true"></i></i><span>Non Favorables</span>
+     </a>
+     {% endif %}
+
+     {% if ntr %} 
+
+        <a
+           href="{% url 'cfc_non_traite' %}"
+           class="list-group-item bg-pperso2 list-group-item-action py-2 ripple active">
+           <i class="fa fa-book me-3 fa-fw me-3" aria-hidden="true"></i></i> <span>Non Traitées</span>
+        </a>
+        {% else %}
+
+
+        <a
+        href="{% url 'cfc_non_traite' %}"
+        class="list-group-item bg-pperso2 list-group-item-action py-2 ripple text-warning">
+        <i class="fa fa-book fa-fw me-3" aria-hidden="true"></i></i><span>Non Traitées</span>
+     </a>
+      {% endif %}
+
+      
+
+        {% if profile %}
+        
+        <a
+        href="{% url 'profile' %}"
+        class="list-group-item bg-pperso2 list-group-item-action py-2 ripple active"
+        ><i class="fas fa-user-cog fa-fw me-3"></i><span>Profile</span></a
+       >
+
+        {% else %}
+        <a
+        href="{% url 'profile' %}"
+        class="list-group-item bg-pperso2 list-group-item-action py-2 ripple"
+        ><i class="fas fa-user-cog fa-fw me-3"></i><span>Profile</span></a
+       >
+        {% endif %}  
+        
+       
+        
+       
+        
+        
+       
+      </div>
+    </div>
+  </nav>
+  <!-- Sidebar -->
+
+  <!-- Navbar -->
+  <nav
+       id="main-navbar"
+       class="navbar navbar-expand-lg navbar-light bg-white fixed-top "
+       >
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+      <!-- Toggle button -->
+      <button
+              class="navbar-toggler"
+              type="button"
+              data-mdb-toggle="collapse"
+              data-mdb-target="#sidebarMenu"
+              aria-controls="sidebarMenu"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+              >
+        <i class="fas fa-bars" id="bars"></i>
+      </button>
+
+      <!-- Brand -->
+      <a class="navbar-brand " href="#">
+        <img
+             src="{% static 'img/logo.png' %}"
+             width="50"
+             alt=""
+             loading="lazy"
+             class="log"
+             />
+
+             <strong class="mx-5"> <h4 class="text-success text-center my-3"> <div class="text-primary"> <span class="text-success tec">S</span>ocials <span class="tec">H</span><span class="text-success">ousings</span>  </div> </h4> </strong>
+      </a>
+      <!-- Search form -->
+      
+
+      <!-- Right links -->
+      <ul class="navbar-nav ms-auto d-flex flex-row ">
+        <!-- Notification dropdown -->
+       
+         
+          
+           
+        <!-- Avatar -->
+        <li class="nav-item dropdown mx-5">
+         
+          <a
+             class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center"
+             href="#"
+             id="navbarDropdownMenuLink"
+             role="button"
+             data-mdb-toggle="dropdown"
+             aria-expanded="false"
+             >
+             {{ user.username}}
+            <i class="fas fa-user-cog mx-1"></i>
+          </a>
+          <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="navbarDropdownMenuLink"
+              >
+            <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+            
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Déconnexion</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- Container wrapper -->
+  </nav>
+  <!-- Navbar -->
+</header>
+<!--Main Navigation-->
+
+<!--Main layout-->
+<main style="margin-top: 58px">
+  <div class="container pt-4">
+    
+    {% block content %}  
+
+    {% endblock %}
+  </div>
+</main>
+<!--Main layout-->
+    <!-- MDB -->
+<script type="text/javascript" src="{% static 'js/jquery-3.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+
+
+
+<script src="{% static 'dist/js/jquery.formset.js' %}"> </script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"> </script>
+
+
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'dist/js/jquery.formset.js' %}"> </script>
+<!-- Bootstrap -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+<!-- overlayScrollbars -->
+<script
+  src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.js' %}"></script>
+
+<!-- OPTIONAL SCRIPTS -->
+<script src="{% static 'dist/js/demo.js' %}"></script>
+
+{% if messages %}
+{% for message in messages %}
+<script type=text/javascript>
+  toastr.options.progressBar = true;
+  toastr.{{ message.tags }}('{{ message }}')
+</script>
+{% endfor %}
+{% endif %}
+
+<script src="{% static 'plugins/Datatables/datatables.min.js' %}"></script>
+
+<script>
+(function ($) {
+  $('.clickable-row').css('cursor', 'pointer');
+  $(".clickable-row").click(function () {
+    window.location = $(this).data("href");
+  });
+})(jQuery)
+
+</script>
+
+
+
+
+
+
+    {%block scripts %}  {% endblock %}
+</body>
+</html>
+

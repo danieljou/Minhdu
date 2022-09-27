@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+{% load static %}
+{% load humanize %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demandeur {{demandeur}}</title>
+    
+    <link rel="stylesheet" href="{% static 'css/demandeur.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <style>
+        .title{
+            background-color: rgb(16, 24, 24);
+            text-align: center;
+            padding: 14px;
+            color: white;
+            font-size: 25px;
+        }
+    </style>
+    
+</head>
+<body>
+
+
+
+
+
+<h3 class="py-2 title"> Demandeur {{demandeur}} {{demandeur.Prenom_demandeur}} </h3>
+<hr>
+<div class="container-fluid mt-2">
+  <div class="row">
+    <div class="card bg-info">
+      <div class="card-header">
+       <strong>  Informations </strong>
+      </div>
+      <div class="card-body">
+        Nombre de pièces jointes : <strong> {{demandeur.getPieceNumber}}  </strong>
+        <br>
+        Pieces manquante(s)
+        <ul>
+        {% for item in PieceManquantes %}
+          <li> {{item}} </li>
+        {% empty %}
+          <!-- <strong>  Dossier Complet </strong> -->
+        {% endfor %}
+      </ul>
+      </div>
+    </div>
+  </div>
+    <div class="row">
+      <div class="col-md-7 mb-3">
+        <div class="card mt-2">
+          <h4 class="card-header"> Demandeur</h4>
+          <div class="card-body">
+            <table> 
+                <tr>
+                  <td width ="30%"> Type de paiement </td>
+                  <td> <strong> : {{demandeur.Type_paiement}}</strong> </td>
+                </tr>
+              <tr>    
+                  <td width="30%"> Nom </td> <td><strong> : {{ demandeur }} </strong> </td>  
+              </tr>
+              <tr>    
+                  <td width="30%"> Prénom </td> <td><strong> : {{ demandeur.Prenom_demandeur }} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Date de naissance </td> <td><strong> : {% if demandeur.Date_de_naissance %} {{ demandeur.Date_de_naissance |date}} {% endif %}  </strong> </td>
+              </tr> 
+              <tr>    
+                  <td width="30%"> Lieu de naissance </td> <td><strong> : {% if demandeur.Lieu_de_Naissance %} {{ demandeur.Lieu_de_Naissance }} {% endif %} </strong> </td>
+              </tr>
+
+
+              <tr>    
+                  <td width="30%"> Ville d'origime </td> <td><strong> : {% if demandeur.Ville_origine %} {{ demandeur.Ville_origine }} {% endif %} </strong> </td>  
+              </tr>
+              <tr>    
+                  <td width="30%"> Statut </td> <td><strong> : {% if demandeur.Statut == 'A' %} Temporaire {% else %} Définitif {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Situation Familiale </td> <td><strong> : {% if demandeur.Situation_famille == 'MA' %} Marié(e)  {% elif demandeur.Situation_famille == 'CE' %}Célibataire {% else %} Veuf(ve) {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Profession </td> <td><strong> : {% if demandeur.Profession %} {{ demandeur.Profession }} {% endif %} </strong> </td>
+              </tr>
+
+              {% comment %} <tr>    
+                  <td width="30%"> Matricule </td> <td><strong> : {% if demandeur.Matricule %} {{ demandeur.Matricule }} {% endif %} </strong> </td>
+              </tr> {% endcomment %}
+              <tr>    
+                  <td width="30%"> Employeur </td> <td><strong> : {% if demandeur.Employeur %} {{ demandeur.Employeur }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Adresse </td> <td><strong> : {% if demandeur.Adresse %} {{ demandeur.Adresse }} {% endif %} </strong> </td>
+              </tr>
+
+              <tr>    
+                  <td width="30%"> Email </td> <td><strong> : {% if demandeur.Email %} {{ demandeur.Email }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Télephone </td> <td><strong> : {% if demandeur.Tel %} {{ demandeur.Tel }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> N° Identité </td> <td><strong> : {% if demandeur.Numero_identite %} {{ demandeur.Numero_identite }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="35%"> N° Compte bancaire </td> <td><strong> : {% if demandeur.Numero_compte_bancaire  %} {{ demandeur.Numero_compte_bancaire   }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Banque </td> <td><strong> : {% if demandeur.Nom_banque %} {{ demandeur.Nom_banque }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%">Auteur </td> <td><strong> : {% if demandeur.Auteur.username  %} {{ demandeur.Auteur.username   }} {% endif %} </strong> </td>
+              </tr>
+              
+            </table>
+             
+          </div>
+        </div>
+
+        <div class="card mt-3">
+          <h4 class="card-header">Revenu du demandeur</h4>
+          <div class="card-body">
+              <table>
+                  
+
+                  <tr>    
+                      <td width="60%">Nature </td> <td><strong> : {% if demandeur.Revenu_homme.Nature == 'S'  %} Salaire {% else %} Autre {% endif %} </strong> </td>
+                  </tr>    
+                  <tr>    
+                      <td width="30%">Montant </td> <td><strong> : {% if demandeur.Revenu_homme.Montant  %} {{ demandeur.Revenu_homme.Montant  |intcomma   }}  {{DEVISE}}{% endif %} </strong> </td>
+                  </tr>                         
+              </table>
+          </div>
+        </div>
+
+        <div class="card mt-3">
+          <h4 class="card-header">Revenu du conjoint</h4>
+          <div class="card-body">
+
+              {% if demandeur.Conjoint_vie == None %} Pas ce conjoint 
+              
+              {% else %} 
+              <table> 
+
+              <tr>    
+                  <td width="30%">Nature </td> <td><strong> : {% if revenuFemme.Nature  == 'S' %}  Salaire {% else %} Autre {% endif %} </strong> </td>
+              </tr>
+
+              <tr>    
+                  <td width="30%">Montant </td> <td><strong> : {% if revenuFemme.Montant  %} {{ revenuFemme.Montant  |intcomma  }} {{DEVISE}} {% endif %} </strong> </td>
+              </tr>
+             
+          </table>
+
+          {% endif %}
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-5">
+        <div class="card mt-2">
+          <h4 class="card-header">Conjoint de vie</h4>
+          <div class="card-body">
+
+            {% if demandeur.Conjoint_vie == None %} Pas ce conjoint 
+              
+              {% else %} 
+
+              <table> 
+
+                  <tr>    
+                      <td width="30%"> Nom </td> <td><strong> : {{ demandeur.Conjoint_vie }} </strong> </td>  
+                  </tr>
+                  <tr>    
+                      <td width="30%"> Prénom </td> <td><strong> : {{ demandeur.Conjoint_vie.Prenom_conjoint }} </strong> </td>  
+                  </tr>
+                  {% comment %} <tr>    
+                      <td width="30%"> Date de naissance </td> <td><strong> : {{ demandeur.Conjoint_vie.Date_naiss_conjoint|date }} </strong> </td>  
+                  </tr> {% endcomment %}
+                  <tr>    
+                      <td width="30%">Lieu de naissance </td> <td><strong> : {% if demandeur.Conjoint_vie.Lieu_naiss_conjoint  %} {{ demandeur.Conjoint_vie.Lieu_naiss_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">Ville d'origine </td> <td><strong> : {% if demandeur.Conjoint_vie.Ville_origine_conjoint  %} {{ demandeur.Conjoint_vie.Ville_origine_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">Profession </td> <td><strong> : {% if demandeur.Conjoint_vie.Profession_conjoint  %} {{ demandeur.Conjoint_vie.Profession_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                  {% comment %} <tr>    
+                      <td width="30%">Matricule </td> <td><strong> : {% if demandeur.Conjoint_vie.Matricule_conjoint  %} {{ demandeur.Conjoint_vie.Matricule_conjoint   }} {% endif %} </strong> </td>
+                  </tr> {% endcomment %}
+                  <tr>    
+                      <td width="30%">Employeur </td> <td><strong> : {% if demandeur.Conjoint_vie.Nom_adresse_employeur  %} {{ demandeur.Conjoint_vie.Nom_adresse_employeur   }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">N° identité </td> <td><strong> : {% if demandeur.Conjoint_vie.Numero_identite_conjoint  %} {{ demandeur.Conjoint_vie.Numero_identite_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">N° compte bancaire </td> <td><strong> : {% if demandeur.Conjoint_vie.Numero_compte_bancaire_conjoint  %} {{ demandeur.Conjoint_vie.Numero_compte_bancaire_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="35%">Banque </td> <td><strong> : {% if demandeur.Conjoint_vie.Nom_banque_conjoint  %} {{ demandeur.Conjoint_vie.Nom_banque_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                 
+              </table>
+              {% endif %}
+          </div>
+
+          
+        </div>
+        
+        
+       
+
+        <div class="card mt-3">
+          <h4 class="card-header">Enfant légitime </h4>
+          <div class="card-body">
+              {% if demandeur.Enfant_leg == None %}
+                Pas d'enfant légitime
+              {% else %}
+              <table>
+
+                  <tr>    
+                      <td width="30%">Nom </td> <td><strong> : {% if demandeur.Enfant_leg.Nom %} {{ demandeur.Enfant_leg.Nom  }} {% endif %} </strong> </td>
+                  </tr>
+  
+                  <tr>    
+                      <td width="30%">Prénom </td> <td><strong> : {% if demandeur.Enfant_leg.Prenom %} {{ demandeur.Enfant_leg.Prenom  }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">Sexe </td> <td><strong> : {% if demandeur.Enfant_leg.Sexe %} {{ demandeur.Enfant_leg.Sexe  }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">Date de naissance </td> <td><strong> : {% if demandeur.Enfant_leg.Date_naiss %} {{ demandeur.Enfant_leg.Date_naiss  }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">Lieu de naissance </td> <td><strong> : {% if demandeur.Enfant_leg.Lieu_naiss %} {{ demandeur.Enfant_leg.Lieu_naiss  }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="70%">Niveau scolaire / profession </td> <td><strong> : {% if demandeur.Enfant_leg.Niveau_scolaire_ou_profession %} {{ demandeur.Enfant_leg.Niveau_scolaire_ou_profession  }} {% endif %} </strong> </td>
+                  </tr>
+                 
+              </table>
+              {% endif %}
+          </div>
+        </div>
+
+        <div class="card mt-4">
+            <h4 class="card-header">Engagement</h4>
+            <div class="card-body">
+                <table>
+  
+                    <tr>    
+                        <td width="30%">Type </td> <td><strong> : {% if demandeur.Engagement.Type_logement  %} {{ demandeur.Engagement.Type_logement  }} {% endif %} </strong> </td>
+                    </tr>
+    
+                    <tr>    
+                        <td width="30%">Prix de vente </td> <td><strong> : {% if demandeur.Engagement.Prix_vente  %} {{ demandeur.Engagement.Prix_vente |intcomma  }} {{DEVISE}} {% endif %} </strong> </td>
+                    </tr>
+  
+                    <tr>    
+                        <td >Dépot de garantie </td> <td><strong> : {% if demandeur.Engagement.Depot_garantie_disponible  %} Disponible {% else %} Indisponible {% endif %} </strong> </td>
+                    </tr>
+  
+                    
+                   
+                </table>
+            </div>
+          </div>
+
+       
+
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="card mt-3">
+          <h4 class="card-header">Engangement Bancaire</h4>
+          <div class="card-body">
+              <table>
+
+                  <tr>    
+                      <td>Etat </td> <td><strong> : {% if demandeur.Engagement_bancaire.Activate  %} Actif {% else %} Non Actif {% endif %} </strong> </td>
+                  </tr>
+  
+                  <tr>    
+                      <td width="30%">Banque </td> <td><strong> : {% if demandeur.Engagement_bancaire.Banque  %} {{ demandeur.Engagement_bancaire.Banque  }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                    <td width="30%">Montant </td> <td><strong> : {% if demandeur.Engagement_bancaire.Montant  %}  {{ demandeur.Engagement_bancaire.Montant  |intcomma }} {{DEVISE}} {% endif %} </strong> </td>
+                    </tr>
+
+                  
+                  <tr>    
+                    <td>Date de fin </td> <td><strong> : {% if demandeur.Engagement_bancaire.Jusquen  %} {{ demandeur.Engagement_bancaire.Jusquen |date  }} {% endif %} </strong> </td>
+                </tr>
+                 
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid mt-3 mb-4">
+    <div class="row">
+      <div class="col-md-12">
+       
+        
+      </div>
+      
+    </div>
+  </div>
+
+    
+</body>
+</html>

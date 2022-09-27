@@ -1,0 +1,19 @@
+
+<div class="container">
+    <div class="row">
+        {% for item in  appartement%}
+            <div class="col-md-4 col-sm-6 col-xs-6">
+                <div class="card">
+                   
+                    <div class="card-body {% if item.get_if_empty %} bg-success  {% else %} bg-danger {% endif %} ">
+                       <center>
+                            App N° {{item.Num_logement}} <br>
+                        {% if item.get_if_empty %} VIDE {% else %} OCCUPE {% endif %}
+                       </center>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+

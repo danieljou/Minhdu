@@ -1,0 +1,78 @@
+{% extends 'base2.html' %}
+
+{% block title %}  
+{% endblock title %}
+{% block styles %}{% endblock styles %}
+{% block content %}
+<style>
+    
+    .dem{
+        display: flex;
+    }
+
+    .form-2{
+        background-color: rgba(251, 172, 172, 0);
+        border: none;
+        outline: none;
+        border-bottom: 1px solid rgb(0, 0, 0);
+        width: 80%;
+    }
+    .form-2:focus{
+
+    }
+</style>
+
+<h2 class="m-3">Résultats de la recherche </h2>
+<hr>
+
+<div class="container-fluid bg-light my-3">
+    <form action="{% url 'DemandeurResults' %}">
+        <div class="dem p-2">
+            <input type="text" name="search" class="form-2"placeholder="Rechercher">
+            
+            <button type="submit" > <i class="fa fa-search" aria-hidden="true"></i> </button>
+        </div>
+    </form>
+</div>
+
+
+
+<table class="table table-striped my-5">
+    <thead>
+        <th>#</th>
+        <th>Etat</th>
+        <th>Demandeur</th>
+        <th>Numéro</th>
+        <th width="300px">Opération</th>
+    </thead>
+
+    <tbody>
+            {% for item in allDemandeur %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td> 
+                        {% if item.Statut == 'A' %}  Temporaire {% else %} Définitif {% endif %}    
+                    </td>
+                    <td>{{ item }}</td>
+                    <td> {% if item.Tel %} {{item.Tel}} {% endif %} </td>
+                    <td>
+                        <a href="{% url 'ViewDemandeur' item.id %}" class="btn btn-warning"> <i class="fa fa-eye" aria-hidden="true"></i> </a>
+                        <a href="{% url 'updateDemandeur' item.id %}" class="btn btn-info mx-3"> <i class="fa fa-pencil" aria-hidden="true"></i> </a>
+                        <button type="button" class="btn btn-danger" onclick='deleteItem( 
+                        "{% url 'deletedemandeur' item.id%}" , "{{item}}" );' data-bs-toggle="modal" data-bs-target="#staticBackdrop" >
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center bg-info">Pas de demandeurs avec ses coordonnées</td>
+                </tr>
+            {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}
+
+
+{% block scripts %}{% endblock scripts %}

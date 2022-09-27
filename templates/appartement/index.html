@@ -1,0 +1,156 @@
+{% extends 'base2.html' %}
+{% load crispy_forms_tags %}
+{% block title %}  
+    MINHDU | Appartements
+{% endblock title %}
+{% block styles %}
+
+{% endblock styles %}
+{% block content %}
+    <h3 class="m-4">  MINHDU | Appartements </h3>
+    <hr>
+
+    {% if Del %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ deletx }}</strong> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+
+
+    
+<!-- 
+    <div class="row mb-2 justify-content-center">
+      <div class="col-xl-5 col-lg-6 mb-2">
+        <div
+          class="toast show fade bg-success"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+          data-mdb-color="success"
+          data-mdb-autohide="false"
+        >
+          <div class="toast-header">
+            <i class="fas fa-check fa-lg me-2"></i>
+            <strong class="me-auto">MDBootstrap</strong>
+            <small>11 mins ago</small>
+            <button
+              type="button"
+              class="btn-close"
+              data-mdb-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="toast-body">Hello, world! This is a toast message.</div>
+        </div>
+      </div>
+    </div> -->
+   
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7">
+              <style>
+                a.page-link{
+                  background-color: red;
+                }
+              </style>
+               <div class="card">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table id="studenttable" class="table table-bordered table-hover" data-page-length='100'>
+                          <thead class="thead-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Description</th>
+                                
+                                <th>Etat</th>
+                                <th>Traitement</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                    
+                            {% for item in AllApp %}
+                                <tr>
+                                    <td>{{item.Num_logement}}</td>
+                                    <td>{{item.Descrip_logement |linebreaks}}</td>
+                                   
+                                    <td>{% if item.Vide %} Vide{% else %} Occupé {% endif %}</td>
+                                    <td>
+                                        <a href="{% url 'EditApparatement' item.id %}" class=""> <i class="fas fa-pencil text-dark mr-2"></i> </a>
+                                        <span type="" class="" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="deleteItem( '{% url "DeleteAppartement" item.id %}', {{item.Num_logement}} )">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                                
+                            {% endfor %}
+                    
+                          </tbody>
+                        </table>
+                      
+                      </div>
+                    </div>
+               </div>
+               
+            </div>
+
+            <div class="col-md-5">
+                <div class="card p-4">
+                    <div class="card-header">
+                        <h6><i class="fas fa-home    "></i> Ajouter un appratement</h6>
+                    </div>
+                    <div class="card-body">
+                      <form method="post" novalidate>
+                        {% csrf_token %}  
+                        {% for item in formAppartement %}
+                            <div class="mb-4 mt-2">
+                                {{item |as_crispy_field}}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary mt-3"> Enregistrer </button>
+                      </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Delete modal  {% endcomment %}
+    <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog ">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                   <strong>
+                    voullez-vous vraiment supprimer l'appratement  <span id="conf"></span> ?
+                   </strong>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
+              <a type="button" href="" id="confdel" class="btn btn-danger" > <i class="fa fa-trash" aria-hidden="true"></i> </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+{% endblock content %}
+
+{% block scripts %}
+      
+<script>
+    $('#studenttable').DataTable({
+    });
+  </script>
+      <script>
+        var confdel = document.getElementById('confdel');
+        var conf = document.getElementById('conf');
+        function deleteItem(id, name){
+            confdel.href = id;
+            conf.innerHTML = name;
+        }
+      </script>
+{% endblock scripts %}

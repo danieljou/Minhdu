@@ -1,0 +1,37 @@
+<div class="table-responsive">
+    <table id="studenttable" class="table table-bordered table-hover" data-page-length='100'>
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Nom complet</th>
+          <th>Matricule</th>
+          <th>Classe Actuelle</th>
+          <th>Genre</th>
+          <th>Numéro des parent</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for student in AllImb %}
+          <tr class='clickable-row' data-href="">
+            <td>{{ forloop.counter}}</td>
+            <td>{{ student.surname}} {{student.firstname }} {{student.other_name }}</td>
+            <td>{{ student.registration_number}}</td>
+            <td>{{ student.current_class}}</td>
+            <td>{{ student.get_gender_display}}</td>
+            <td>{{ student.parent_mobile_number}}</td>
+            <td>{{ student.get_current_status_display}}</td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+</div>
+
+
+
+<script>
+  $('#studenttable').DataTable({
+  });
+</script>

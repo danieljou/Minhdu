@@ -1,0 +1,110 @@
+{% extends "base2.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    
+    <div class="container my-3">
+            <h1>Gérer une Décisoin</h1>
+            <hr>
+        <div class="row">
+            <div class="col-6 border ">
+                <form action="" method="post" class="my-3">
+                    {% csrf_token %}
+                    Selectionnez un demandeur 
+                    <select name="demande" id="demandes" class="form-select my-3" >
+                        <option value="initial" selected>----- Selectionez une demande ------</option>
+                        {% for item in  demandes %}
+                            <option value="{{item.id}}">{{item}}</option>
+                        {% endfor %}
+                    </select>
+
+                    Selectionnez un appartement 
+                    <select name="appartement" id="appartement" class="form-select my-3">
+                        <option value="initial" selected>----- Selectionez un appartement ------</option>
+                        {% for item in  appart_vide %}
+                            <option value={{item.id}}>{{item}} , {{item.immeuble}}</option>
+                        {% endfor %}
+                    </select>
+
+                    {{form  |crispy}}
+
+                    <input type="submit" value="Enregistrer" class="btn btn-success">
+                </form>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header text-center bg-info text-dark">
+                       <strong>  Informations Relatives </strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="demandeur" id="demandeur_info">
+                            <strong> Informations sur le demandeur </strong>
+                            <hr>
+                            <div class="nom" id="nom"></div>
+                        </div>
+                        <hr>
+                        <div class="demandeur" id="demandeur_info">
+                            <strong >Informations sur l'appartement </strong>
+                            <hr>
+                            <div class="appart" id="appart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+
+
+{% block scripts %} 
+    <script>
+        $(document).ready(function(){
+            $('#demandes').on('change', function(e){
+              
+                if($('#demandes').val() != "initial"){
+                    var id = $('#demandes').val();
+                    var url = "/get_demandeur/"+ id;                   
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        success: function(response){
+                            $('#nom').html ( "Nom et Présom <br/>");
+                            $('#nom').append(response.demandeur.Noms_demandeur);
+                            $('#nom').append ( " "+response.demandeur.Prenom_demandeur + "<br>");
+                            $('#nom').append ( "Nombre de Pièces jointe <br> <strong> "+response.nbpdispo + " / " +response.nbpiece_total + '</strong>');
+                           
+                        },
+                    });
+                }
+                else{
+                    $('#nom').html("");
+                }
+            });
+    
+
+            $('#appartement').on('change', function(e){
+              
+                if($('#appartement').val() != "initial"){
+                    var id = $('#appartement').val();
+                    var url = "/get_appart/"+ id;                   
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        success: function(response){
+                            $('#appart').html ( "N° de l' appartement  <strong> ");
+                            $('#appart').append(response.appart.Num_logement + "</strong> <br> ");
+                            $('#appart').append(" Description <br>"+ response.appart.Descrip_logement + "</strong> <br> ");
+                            $('#appart').append ( " Immeuble  <strong>"+response.appart.immeuble + " </strong><br>");   
+                        },
+                    });
+                }
+                else{
+                    $('#appart').html("");
+                }
+            });          
+          });
+       
+    </script>
+{% endblock scripts %}

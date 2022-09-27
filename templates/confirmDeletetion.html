@@ -1,0 +1,29 @@
+{% extends 'base2.html' %}
+
+{% block title %}  
+{% endblock title %}
+{% block styles %}{% endblock styles %}
+{% block content %}
+
+
+
+<div class="row justify-content-center">
+  <div class="col-md-5 col-sm-6">
+      <div class="container">
+        <div class="card">
+          <div class="card-header">
+            Confirmation de supression
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Demandeur {{demandeur}}</h5>
+            <p class="card-text">Voullez vraiment supprimer ? </p>
+            <a href="{% url 'deletedemandeur' demandeur.slug %}" class="btn btn-danger">Oui</a>  <a href="{% url 'home' %}" class="btn btn-warning">Non</a>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}{% endblock scripts %}

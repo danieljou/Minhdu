@@ -1,0 +1,84 @@
+{% extends 'base2.html' %}
+
+{% block title %}  
+{% endblock title %}
+{% block styles %}{% endblock styles %}
+{% block content %}
+
+    <div class="container p-3">
+        <h3>Utilisateurs et rôles</h3>
+    </div>
+    <hr>
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-4">
+                <a href="{% url 'user_form' %}" class="btn btn-primary fas fa-user-plus p-3"> Ajouter</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="studenttable" class="table table-bordered table-hover" data-page-length='100'>
+                      <thead class="thead-light">
+                        <tr>
+                          <th>#</th>
+                          <th>Nom d'utilisateur</th>
+                          <th>Nom</th>
+                          <th>Prénom</th>
+                          <th>Email</th>
+                          <th>Rôle</th>
+                          {% comment %} <th>Statut</th> {% endcomment %}
+                          <th width="5%">Traiements</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                
+                        {% for item in allusers %}
+                          <tr class='clickable-row' data-href="">
+                            <td>{{ forloop.counter}}</td>
+                            <td>{{ item.username}}  </td>
+                            <td>{{ item.last_name  }} </td>
+                            <td>{{ item.first_name }}</td>
+                            <td>{{ item.email}}</td>
+                             <td class="text-center">{{ item.role}}</td>
+                            {% comment %}
+                             {% if item.actif %}
+                                <td  class="text-center" >ACTIF</td>
+                                
+                            {% else %}
+                                <td  class="text-center" > INACTIF</td>
+                            {% endif %} {% endcomment %}
+                            
+                            <td>
+                                <a href="{% url 'user_update' item.id %}"> <i class="fas fa-user-edit   text-dark mr-2"></i> </a>
+                                <a href="{% url 'confirm_delete' item.id %}"> <i class="fa fa-trash  text-dark" aria-hidden="true" ></i></a>
+
+                            </td>
+                            
+                          </tr>
+                        {% endfor %}
+                
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+   
+{% endblock content %}
+
+
+
+{% block scripts %}
+
+<script>
+    $('#studenttable').DataTable({
+    });
+</script>
+
+{% endblock scripts %}

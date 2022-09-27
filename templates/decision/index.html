@@ -1,0 +1,106 @@
+{% extends 'base2.html' %}
+{% load crispy_forms_tags %}
+{% block title %}  
+    MINHDU | Décisions
+{% endblock title %}
+{% block styles %}
+
+{% endblock styles %}
+{% block content %}
+    <h3 class="m-4">  MINHDU | Décision </h3>
+    <hr>
+
+   
+   <div class="container my-3">
+    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Gérer une décision
+    </button> -->
+
+    <a href="{% url 'decision_form' %}" class="btn btn-primary"> Gérer une décision</a>
+      
+      <!-- Modal -->
+      <div class="row">
+            <div class="col-12">
+                <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content" width="1200px">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="staticBackdropLabel">Gérer une décision</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="" method="post" id="form-creer-decision">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                    {{formdecision |crispy}}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+                              <button type="submit" class="btn btn-success">Valider</button>
+                            </div>
+                        </form>
+                        
+                      </div>
+                    </div>
+                  </div>
+            </div>
+      </div>
+      
+      
+   </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <table class="table table-striped">
+                    <thead>
+                        <th>Commentaire</th>
+                        <th> Decision </th>
+                        <th>Demandeur </th>
+                       
+                        <th>Traitement</th>
+                    </thead>
+                    <tbody>
+                        {% for item in Allldec %}
+                            <tr>
+                                <td>{{item.Commentaire }}</td>
+                                <td> 
+
+                                    {% if item.Favorable %} Favorable {% else %} Défavorable{% endif %}
+                                </td>
+                                <td>{{item.Demandeur}} </td>
+                                <td>
+                                    <a href="{% url 'EditDecision' item.id %}" class="text-dark"> <i class="fas fa-pencil"></i> </a>
+                                    <a href="{% url 'DeleteDecision' item.id %}" class="text-dark"> <i class="fas fa-trash"></i> </a>
+                                </td>
+                            </tr>
+                            {% empty %} 
+                                <tr> <td  colspan="5" class="text-center bg-info"> Aucune décision prise pour le moment</td> </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+               
+            </div>
+
+           
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        $(document).on('submit', '#form-creer-decision', function(e){
+            var formdecision = $("#form-creer-decision").serialize();
+            e.preventDefault(); 
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'Decision_add' %}",
+                data: formdecision,
+                success: function(response){
+                    alert("Success");
+                },
+                error: function(reqponse){
+                    alert('Erreur')
+                }
+            });
+        });
+    </script>
+{% endblock scripts %}

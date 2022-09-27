@@ -1,0 +1,58 @@
+{% extends 'base2.html' %}
+
+{% load crispy_forms_tags %}
+{% block title %}  
+{% endblock title %}
+{% block styles %}
+    <style>
+        .text-muted{
+            margin-top: 30px;
+        }
+    </style>
+{% endblock styles %}
+{% block content %}
+
+
+<div class="container p-3">
+    <h3>Utilisateurs et rôles | Ajout</h3>
+</div>
+<hr>
+<a href="{% url 'users' %}" class="btn btn-warning"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Retour</a>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-sm-8">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Ajoutez un utilisateur</strong>
+                        </div>
+                        <div class="card-body">
+                            <form  method="post" enctype="multipart/form-data" novalidate>
+                                {% csrf_token %}
+            
+                                {% for item in role_form %}
+                                    <div class="mb-5 mt-5">
+                                        {{item |as_crispy_field}}
+                                    </div>
+                                {% endfor %}
+            
+                                {% for item in form_user %}
+                                    <div class="mb-5 mt-5">
+                                        {{item |as_crispy_field}}
+                                    </div>
+                                {% endfor %}
+                                
+                                <input type="submit" value="Enregistrer" class="btn btn-success">
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+
+{% endblock scripts %}

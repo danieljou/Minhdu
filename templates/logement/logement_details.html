@@ -1,0 +1,228 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}  MINHDU | Détails {% endblock title %}
+
+{% block styles %}
+<script src="{% static 'js/chart.min.js' %}"></script>
+    <style>
+        .imeubles-list{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            flex-wrap: wrap;
+
+        }
+
+        .imeubles-item{
+            display: flex;
+            width: 50%;
+            justify-content: center;
+            cursor: pointer;
+            margin-top: 17px;
+
+        }
+        @media all and (max-width:800px) {
+            .imeubles-item{
+                width: 100%;
+            }
+        }
+        .imeubles-item:hover .content{
+           
+            transition: 0.3s;
+            transform: scale(1.1);
+           
+            border-radius: 7px;
+        }
+        .imeubles-item .content{
+            border: solid .3px rgba(0, 0, 255, 0.326);
+            width: 90%;
+            padding: 12px;
+        }
+        .imeubles-item .canvas{
+            width: 50%;
+            height: 30px;
+        }
+    </style>
+    
+{% endblock styles %}
+{% block content %}
+    <div class="container">
+            <div class="row my-2">
+                <h1> Details sur le logement : {{logement}} </h1>
+                <hr>
+            </div>
+            <div class="row my-3 mx-0">
+                <div class="col">
+                    <a href="{% url 'Logement' %}" class="btn btn-primary">Retour</a>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex justify-content-between">
+                            <div class="card col-md-5 p-0">
+                                <div class="card-header bg-primary">
+                                        INFORMATIONS
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-9">Ville </div>
+                                        <div class="col-md-3 text-bold">{{logement.Ville}}</div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-9">Quartier </div>
+                                        <div class="col-md-3 text-bold">{{logement.Quartier}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card col-md-5  p-0">
+                                <div class="card-header bg-success">
+                                        INFORMATIONS
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-9">Nonbre de logement </div>
+                                        <div class="col-md-3 text-bold"> {{logement.get_nombre_immeuble}}  </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-9">Dégré d'occupation <br>
+                                           
+                                        </div>
+                                        <div class="col-12 text-bold">
+                                            <div class="progress " style="height: 20px;">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"  aria-label="Example with label" style="width:{{logement.get_ocupations}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{logement.get_ocupations}}%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+    
+                        
+                    </div>
+                    <div class="col-md-12 ">
+                        <div class="card">
+                            <div class="card-header text-bold bg-dark">
+                                Liste des immeubles
+                            </div>
+                            <div class="card-body">
+                                <div class="imeubles-list">
+                                    {% for item in all_immeubles %}
+                                        <div class="imeubles-item" data-id="{{item.id}}" data-letter="{{item.Lettre}}" data-url="{% url 'get_immeuble' item.id %}">
+                                            <div class="content">
+                                                   <p>Imeuble :  {{item.Lettre}}</p>
+                                                   <p>Degré d'ocupation  : {{item.get_ocupation}} %
+                                                   <div class="row d-flex justify-content-center">
+                                                    <div class="col-md-6 ">
+                                                        <!-- <canvas id="myChart{{forloop.counter}}" data-value="{{item.get_ocupation}} " class="canvas"></canvas> -->
+                                                        <!-- <div id="gauge{{forloop.counter}}" class="gauge"></div> -->
+                                                        
+                                                    <div id="gauge{{forloop.counter}}" class="gauge" data-value="{{item.get_ocupation}}"></div>
+                                                    </div>
+                                                   </div>
+                                                   </p>                                                
+                                                   <p>Nombre d'appratement : {{item.get_num_appartement}} </p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+    </div>
+
+   
+    <div class="modal fade" id="staticBackdrop" >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Immeuble <span id="name"> </span></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="data"></div>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+
+{% endblock content %}
+
+
+
+{% block scripts %}
+<script src="{% static 'js/jusgage/raphael-2.1.4.min.js' %}"></script>
+<script src="{% static 'js/jusgage/justgage.js' %}"></script>
+
+<script>
+
+    var total =  {{logement.get_nombre_immeuble}} ;
+    total = parseInt(total);
+    
+    for(let i= 1; i <= total; i++){
+    var id = 'gauge' + i;
+    var id2 = '#' + id;
+    var valeur =$('#gauge'+i).data('value');
+    valeur = parseFloat(valeur);
+    
+    var g1;
+    document.addEventListener("DOMContentLoaded", function(event) {
+        g1 = new JustGage({
+            id: 'gauge' + i,
+            value: valeur,
+            min: 0,
+            max: 100,
+            donut: true,
+            gaugeWidthScale: 0.6,
+            counter: true,
+            hideInnerShadow: true,
+            symbol: '%',
+            title: "Dégré d'occupation",            
+            relativeGaugeSize: true
+        });
+
+    });
+
+    }
+</script>
+
+<script>
+    $('.imeubles-item').on('click',function(){
+        var item = $(this);
+        $.ajax({
+            url: $(this).data('url'),  
+            type: 'get',
+            dataType: 'json',
+            success: function (data ){
+                $("#data").html(data.html_document);
+               
+                
+                
+            },
+            beforeSend:function() {
+                $('#staticBackdrop').modal('show');
+                $('#staticBackdrop span').html(item.data('letter'));
+               
+               
+            },
+            
+            
+        });
+
+    });
+</script>
+
+
+   
+{% endblock scripts %}
+

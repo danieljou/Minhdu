@@ -1,0 +1,85 @@
+{% extends 'cfc_base.html' %}
+
+{% block title %}  
+CFC - Accueil
+{% endblock title %}
+{% block styles %}{% endblock styles %}
+{% block content %}
+    <div class="container p-3">
+        <h3>CFC</h3>
+    </div>
+    <hr>  
+    <style>
+       
+    </style>
+
+    
+    
+      
+    <div class="container">
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="studenttable" class="table table-bordered table-hover" data-page-length='100'>
+                          <thead class="thead-light">
+                            <tr>
+                              <th>S/N</th>
+                              <th>Demandeur</th>
+                              <th>Etat de traitement</th>
+                              <th>Pièces jointes</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                    
+                            {% for demande in all_demandes %}
+                              <tr class='clickable-row' data-href="{% url 'cfc_custum' demande.slug %}">
+                                <td>{{ forloop.counter}}</td>
+                                <td>{{ demande}}</td>
+                                <td> 
+                                    {% if demande.info_cfc == 'NT' %}
+                                        Non traitée
+                                    {% elif demande.info_cfc == 'F' %}
+                                        <span class="badge badge-success h2">Favorable</span>
+                                    {% else %}
+                                        <span class="badge badge-danger h2">Non favorable</span>  
+                                    {% endif %}
+                                    
+                                </td>
+                                <td>{{demande.getPieceNumber}} / {{demande.getTotalPieces}} </td>
+                                <td>
+                                    {% if demande.info_cfc == 'NT' %}
+                                        <a href="{% url 'cfc_validate' demande.slug %}" class="btn btn-success"> Valider</a>
+                                        <a href="" class="btn btn-danger"> Rejetter</a>
+                                    
+                                       
+                                    {% else %}
+                                        
+                                    {% endif %}
+                                </td>
+                              </tr>
+                            {% endfor %}
+                    
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+   
+
+{% endblock content %}
+
+{% block scripts %}
+
+ 
+    <script>
+        $('#studenttable').DataTable({
+        });
+    </script>
+
+{% endblock scripts %}

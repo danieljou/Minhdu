@@ -1,0 +1,597 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}  
+{% endblock title %}
+{% block styles %}
+
+{% endblock styles %}
+<link rel="stylesheet" href="{% static 'css/demandeur.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+<style>
+  .btn-slider{
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    border: none;
+}
+</style>
+{% block content %}
+
+<h3 class="m-3"> Demandeur {{demandeur}} </h3>
+<hr>
+
+<div class="d-flex justify-content-between">
+    
+<a href="{% url 'home' %}" class="btn my-3 btn-secondary"> <i class="fas fa-stream    "></i> Revenir à la liste </a>
+<a href="{% url 'generer' demandeur.slug %}" class="btn my-3 btn-primary" target="_blank"> <i class="fa fa-print" aria-hidden="true"></i> Télécharger le pdf</a>
+
+
+
+<a href="{% url 'updateDemandeur' demandeur.slug %}" class="btn my-3 btn-warning target"> <i class="fa fa-pen"></i> Modifier</a>
+<!-- 
+{% if user.role != 'Gestionnaire' %}
+  <a href="" class="btn my-3 btn-success text-light"><i class="fas fa-pencil-alt"></i> Gérer la décision</a>
+{% else %}
+  <button  class="btn my-3 btn-success" disabled>
+    <a href="" class="text-light"><i class="fas fa-pencil-alt"></i> Gérer la décision</a>
+  </button>
+{% endif %} -->
+
+</div>
+<div class="container-fluid mt-2">
+  <div class="row">
+    <div class="card p-0">
+      <div class="card-header bg-primary">
+       <strong>  Informations </strong>
+       
+      </div>
+      <div class="card-body">
+
+        
+        
+        <!-- <span class="badge {% if demandeur.getState == 'Incomplet' %} badge-danger {% else %} badge-success {% endif %}">  Etat : {{demandeur.getState}} </span> -->
+        <br>
+        Nombre de pièces jointes : <strong> {{demandeur.getPieceNumber}} / {{demandeur.getTotalPieces}} </strong>
+        <br>
+        Pieces manquante(s)
+        <ul>
+        {% for item in demandeur.PieceManquantes %}
+          <li> {{item}} </li>
+        {% empty %}
+          <strong> 
+            <span class="badge badge-success">
+              Dossier Complet
+            </span>
+            
+           </strong>
+        {% endfor %}
+      </ul>
+      </div>
+    </div>
+  </div>
+    <div class="row">
+      <div class="col-md-7 mb-3">
+        <div class="card mt-2">
+          <h4 class="card-header bg-primary"> Demandeur</h4>
+          <div class="card-body">
+            <table> 
+                <tr>
+                  <td width ="30%"> Type de paiement </td>
+                  <td> <strong> : {{demandeur.Type_paiement}}</strong> </td>
+                </tr>
+              <tr>    
+                  <td width="30%"> Nom </td> <td><strong> : {{ demandeur }} </strong> </td>  
+              </tr>
+              <tr>    
+                  <td width="30%"> Prénom </td> <td><strong> : {{ demandeur.Prenom_demandeur }} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Date de naissance </td> <td><strong> : {% if demandeur.Date_de_naissance %} {{ demandeur.Date_de_naissance |date}} {% endif %}  </strong> </td>
+              </tr> 
+              <tr>    
+                  <td width="30%"> Lieu de naissance </td> <td><strong> : {% if demandeur.Lieu_de_Naissance %} {{ demandeur.Lieu_de_Naissance }} {% endif %} </strong> </td>
+              </tr>
+
+
+              <tr>    
+                  <td width="30%"> Ville d'origime </td> <td><strong> : {% if demandeur.Ville_origine %} {{ demandeur.Ville_origine }} {% endif %} </strong> </td>  
+              </tr>
+              <tr>    
+                  <td width="30%"> Statut </td> <td><strong> : {% if demandeur.Statut == 'A' %} Temporaire {% else %} Définitif {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Situation Familiale </td> <td><strong> : {% if demandeur.Situation_famille == 'MA' %} Marié(e)  {% elif demandeur.Situation_famille == 'CE' %}Célibataire {% else %} Veuf(ve) {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Profession </td> <td><strong> : {% if demandeur.Profession %} {{ demandeur.Profession }} {% endif %} </strong> </td>
+              </tr>
+
+              {% comment %} <tr>    
+                  <td width="30%"> Matricule </td> <td><strong> : {% if demandeur.Matricule %} {{ demandeur.Matricule }} {% endif %} </strong> </td>
+              </tr> {% endcomment %}
+              <tr>    
+                  <td width="30%"> Employeur </td> <td><strong> : {% if demandeur.Employeur %} {{ demandeur.Employeur }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Adresse </td> <td><strong> : {% if demandeur.Adresse %} {{ demandeur.Adresse }} {% endif %} </strong> </td>
+              </tr>
+
+              <tr>    
+                  <td width="30%"> Email </td> <td><strong> : {% if demandeur.Email %} {{ demandeur.Email }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Télephone </td> <td><strong> : {% if demandeur.Tel %} {{ demandeur.Tel }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> N° Identité </td> <td><strong> : {% if demandeur.Numero_identite %} {{ demandeur.Numero_identite }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="35%"> N° Compte bancaire </td> <td><strong> : {% if demandeur.Numero_compte_bancaire  %} {{ demandeur.Numero_compte_bancaire   }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%"> Banque </td> <td><strong> : {% if demandeur.Nom_banque %} {{ demandeur.Nom_banque }} {% endif %} </strong> </td>
+              </tr>
+              <tr>    
+                  <td width="30%">Auteur </td> <td><strong> : {{ demandeur.createur.username   }}  </strong> </td>
+              </tr>
+              
+            </table>
+             
+          </div>
+        </div>
+
+        <div class="card mt-3">
+          <h4 class="card-header bg-primary">Revenu du demandeur</h4>
+          <div class="card-body">
+              <table>
+                  
+
+                  <tr>    
+                      <td width="60%">Nature </td> <td><strong> : {% if demandeur.Revenu_homme.Nature == 'S'  %} Salaire {% else %} Autre {% endif %} </strong> </td>
+                  </tr>    
+                  <tr>    
+                      <td width="30%">Montant </td> <td><strong> : {% if demandeur.Revenu_homme.Montant  %} {{ demandeur.Revenu_homme.Montant  |intcomma   }}  {{DEVISE}}{% endif %} </strong> </td>
+                  </tr>                         
+              </table>
+          </div>
+        </div>
+
+        <div class="card mt-3">
+          <h4 class="card-header bg-primary">Revenu du conjoint</h4>
+          <div class="card-body">
+
+              {% if demandeur.Conjoint_vie == None %} Pas ce conjoint 
+              
+              {% else %} 
+              <table> 
+
+              <tr>    
+                  <td width="30%">Nature </td> <td><strong> : {% if revenuFemme.Nature  == 'S' %}  Salaire {% else %} Autre {% endif %} </strong> </td>
+              </tr>
+
+              <tr>    
+                  <td width="30%">Montant </td> <td><strong> : {% if revenuFemme.Montant  %} {{ revenuFemme.Montant  |intcomma  }} {{DEVISE}} {% endif %} </strong> </td>
+              </tr>
+             
+          </table>
+
+          {% endif %}
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-5">
+        <div class="card mt-2">
+          <h4 class="card-header bg-success">Conjoint de vie</h4>
+          <div class="card-body">
+
+            {% if demandeur.Conjoint_vie == None %} Pas ce conjoint 
+              
+              {% else %} 
+
+              <table> 
+
+                  <tr>    
+                      <td width="30%"> Nom </td> <td><strong> : {{ demandeur.Conjoint_vie.Nom_conjoint }} </strong> </td>  
+                  </tr>
+                  <tr>    
+                      <td width="30%"> Prénom </td> <td><strong> : {{ demandeur.Conjoint_vie.Prenom_conjoint }} </strong> </td>  
+                  </tr>
+                  {% comment %} <tr>    
+                      <td width="30%"> Date de naissance </td> <td><strong> : {{ demandeur.Conjoint_vie.Date_naiss_conjoint|date }} </strong> </td>  
+                  </tr> {% endcomment %}
+                  <tr>    
+                      <td width="30%">Lieu de naissance </td> <td><strong> : {% if demandeur.Conjoint_vie.Lieu_naiss_conjoint  %} {{ demandeur.Conjoint_vie.Lieu_naiss_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">Ville d'origine </td> <td><strong> : {% if demandeur.Conjoint_vie.Ville_origine_conjoint  %} {{ demandeur.Conjoint_vie.Ville_origine_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">Profession </td> <td><strong> : {% if demandeur.Conjoint_vie.Profession_conjoint  %} {{ demandeur.Conjoint_vie.Profession_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                  {% comment %} <tr>    
+                      <td width="30%">Matricule </td> <td><strong> : {% if demandeur.Conjoint_vie.Matricule_conjoint  %} {{ demandeur.Conjoint_vie.Matricule_conjoint   }} {% endif %} </strong> </td>
+                  </tr> {% endcomment %}
+                  <tr>    
+                      <td width="30%">Employeur </td> <td><strong> : {% if demandeur.Conjoint_vie.Nom_adresse_employeur  %} {{ demandeur.Conjoint_vie.Nom_adresse_employeur   }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">N° identité </td> <td><strong> : {% if demandeur.Conjoint_vie.Numero_identite_conjoint  %} {{ demandeur.Conjoint_vie.Numero_identite_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">N° compte bancaire </td> <td><strong> : {% if demandeur.Conjoint_vie.Numero_compte_bancaire_conjoint  %} {{ demandeur.Conjoint_vie.Numero_compte_bancaire_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="35%">Banque </td> <td><strong> : {% if demandeur.Conjoint_vie.Nom_banque_conjoint  %} {{ demandeur.Conjoint_vie.Nom_banque_conjoint   }} {% endif %} </strong> </td>
+                  </tr>
+                 
+              </table>
+              {% endif %}
+          </div>
+
+          
+        </div>
+        
+        
+       
+
+        <div class="card mt-3">
+          <h4 class="card-header bg-success">Enfant légitime </h4>
+          <div class="card-body">
+              {% if demandeur.Enfant_leg == None %}
+                Pas d'enfant légitime
+              {% else %}
+              <table>
+
+                  <tr>    
+                      <td width="30%">Nom </td> <td><strong> : {% if demandeur.Enfant_leg.Nom %} {{ demandeur.Enfant_leg.Nom  }} {% endif %} </strong> </td>
+                  </tr>
+  
+                  <tr>    
+                      <td width="30%">Prénom </td> <td><strong> : {% if demandeur.Enfant_leg.Prenom %} {{ demandeur.Enfant_leg.Prenom  }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">Sexe </td> <td><strong> : {% if demandeur.Enfant_leg.Sexe %} {{ demandeur.Enfant_leg.Sexe  }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">Date de naissance </td> <td><strong> : {% if demandeur.Enfant_leg.Date_naiss %} {{ demandeur.Enfant_leg.Date_naiss  }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="30%">Lieu de naissance </td> <td><strong> : {% if demandeur.Enfant_leg.Lieu_naiss %} {{ demandeur.Enfant_leg.Lieu_naiss  }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="70%">Niveau scolaire / profession </td> <td><strong> : {% if demandeur.Enfant_leg.Niveau_scolaire_ou_profession %} {{ demandeur.Enfant_leg.Niveau_scolaire_ou_profession  }} {% endif %} </strong> </td>
+                  </tr>
+                 
+              </table>
+              {% endif %}
+          </div>
+        </div>
+
+        <div class="card mt-4">
+            <h4 class="card-header bg-success">Engagement</h4>
+            <div class="card-body">
+                <table>
+  
+                    <tr>    
+                        <td width="30%">Type </td> <td><strong> : {% if demandeur.Engagement.Type_logement  %} {{ demandeur.Engagement.Type_logement  }} {% endif %} </strong> </td>
+                    </tr>
+    
+                    <tr>    
+                        <td width="30%">Prix de vente </td> <td><strong> : {% if demandeur.Engagement.Prix_vente  %} {{ demandeur.Engagement.Prix_vente |intcomma  }} {{DEVISE}} {% endif %} </strong> </td>
+                    </tr>
+  
+                    <tr>    
+                        <td width="65%">Dépot de garantie </td> <td><strong> : {% if demandeur.Engagement.Depot_garantie_disponible  %} Disponible {% else %} Indisponible {% endif %} </strong> </td>
+                    </tr>
+  
+                    
+                   
+                </table>
+            </div>
+          </div>
+
+       
+
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="card mt-3">
+          <h4 class="card-header bg-info">Engangement Bancaire</h4>
+          <div class="card-body">
+              <table>
+
+                  <tr>    
+                      <td width="60%">Etat </td> <td><strong> : {% if demandeur.Engagement_bancaire.Activate  %} Actif {% else %} Non Actif {% endif %} </strong> </td>
+                  </tr>
+  
+                  <tr>    
+                      <td width="30%">Banque </td> <td><strong> : {% if demandeur.Engagement_bancaire.Banque  %} {{ demandeur.Engagement_bancaire.Banque  }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                    <td width="30%">Montant </td> <td><strong> : {% if demandeur.Engagement_bancaire.Montant  %}  {{ demandeur.Engagement_bancaire.Montant  |intcomma }} {{DEVISE}} {% endif %} </strong> </td>
+                    </tr>
+
+                  
+                  <tr>    
+                    <td width="40%">Date de fin </td> <td><strong> : {% if demandeur.Engagement_bancaire.Jusquen  %} {{ demandeur.Engagement_bancaire.Jusquen |date  }} {% endif %} </strong> </td>
+                </tr>
+                 
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid mt-3 mb-4">
+    <div class="row">
+      <div class="col-md-12">
+       
+        
+      </div>
+      <div class="col-md-12">
+        <div class="card mt-3">
+          <h4 class="card-header bg-info">Pièces jointes </h4>
+          <div class="card-body">
+
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+               En savoir plus sur les pieces jointes
+            </button>
+                <!--  liste de pieces jointe  -->
+               
+               
+                
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade " id="staticBackdrop"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog " style = "min-width: 700px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Pieces jointes</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                
+                
+                <div class="">
+                  <div class=" active">
+                    <strong> Demande de logement </strong>
+                    {% if demandeur.Fichiers_joint.Demande_logement %}
+                    <img src="{{ demandeur.Fichiers_joint.Demande_logement.url }}" class="d-block w-100" alt="...">
+
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+                  <div class="">
+                    <strong> Cni demandeur </strong>
+                    {% if demandeur.Fichiers_joint.Cni_demandeur %}
+                    <img src="{{ demandeur.Fichiers_joint.Cni_demandeur.url }}" class="d-block w-100" alt="...">
+
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+                  <div class="">
+                    <strong> Cni conjoint </strong>
+                    {% if demandeur.Fichiers_joint.Cni_conjoint %}
+                    <img src="{{ demandeur.Fichiers_joint.Cni_conjoint.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong> Acte de naissance </strong>
+                    {% if demandeur.Fichiers_joint.Acte_naissance %}
+                    <img src="{{ demandeur.Fichiers_joint.Acte_naissance.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong>Acte de mariage </strong>
+                    {% if demandeur.Fichiers_joint.Acte_mariage %}
+                    <img src="{{ demandeur.Fichiers_joint.Acte_mariage.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong>Acte de deces du conjoint </strong>
+                    {% if demandeur.Fichiers_joint.Acte_deces_conjoint %}
+                    <img src="{{ demandeur.Fichiers_joint.Acte_deces_conjoint.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong> Certificat de celibat </strong>
+                    {% if demandeur.Fichiers_joint.Certificat_celibat %}
+                    <img src="{{ demandeur.Fichiers_joint.Certificat_celibat.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong>Attestation de travail </strong>
+                    {% if demandeur.Fichiers_joint.Attestation_travail %}
+                    <img src="{{ demandeur.Fichiers_joint.Attestation_travail.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong>Attestation de presence effective cfc </strong>
+                    {% if demandeur.Fichiers_joint.Attestation_presence_effective_cfc %}
+                    <img src="{{ demandeur.Fichiers_joint.Attestation_presence_effective_cfc.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong> Bulletin de paie 1 cfc </strong>
+                    {% if demandeur.Fichiers_joint.Bulletin_paie1_cfc %}
+                    <img src="{{ demandeur.Fichiers_joint.Bulletin_paie1_cfc.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong> Bulletin de paie 2 cfc </strong>
+                    {% if demandeur.Fichiers_joint.Bulletin_paie2_cfc %}
+                    <img src="{{ demandeur.Fichiers_joint.Bulletin_paie2_cfc.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong>Bulletin de paie 3 cfc </strong>
+                    {% if demandeur.Fichiers_joint.Bulletin_paie3_cfc %}
+                    <img src="{{ demandeur.Fichiers_joint.Bulletin_paie3_cfc.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong> Recu de paiement des frais de dossier </strong>
+                    {% if demandeur.Fichiers_joint.Recu_paiement_frais_dossier %}
+                    <img src="{{ demandeur.Fichiers_joint.Recu_paiement_frais_dossier.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong> Engagement sur honneur occup pers </strong>
+                    {% if demandeur.Fichiers_joint.Engagement_sur_honneur_occup_pers %}
+                    <img src="{{ demandeur.Fichiers_joint.Engagement_sur_honneur_occup_pers.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                
+
+                  <div class="">
+                    <strong> Engagement sur honneur payer apport perso cfc </strong>
+                    {% if demandeur.Fichiers_joint.Engagement_sur_honneur_payer_apport_perso_cfc %}
+                    <img src="{{ demandeur.Fichiers_joint.Engagement_sur_honneur_payer_apport_perso_cfc.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+
+
+                  <div class="">
+                    <strong> Engagement sur honneur payer comptant cfc </strong>
+                    {% if demandeur.Fichiers_joint.Engagement_sur_honneur_payer_comptant_cfc %}
+                    <img src="{{ demandeur.Fichiers_joint.Engagement_sur_honneur_payer_comptant_cfc.url }}" class="d-block w-100" alt="...">
+                      {% else %}
+                      <div class="badge bg-danger"> Document non présent </div>
+                    {% endif %}
+                  </div>
+                  <br>
+                  <hr>
+                </div>
+                <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div> -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{% endblock content %}
+
+{% block scripts %}
+
+<script>
+  $(document).ready(function(){
+    $('.target').click(function (event){
+        var url = $(this).attr("href");
+            window.open(url);
+            event.preventDefault();
+    });
+});﻿
+</script>
+{% endblock scripts %}

@@ -1,0 +1,46 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <title>Connexion</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/custum.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/banner.jpg' %}"  type="image/x-icon">
+    <style>
+      .mb-3p{
+        margin-bottom: -20px;
+        margin-top: 20px;
+      }
+      .mb-3p .icopp{
+        transform: translateX(10px) translateY(-47px);
+        color: rgba(0, 0, 0, 0.685);
+      }
+      .mb-3p input,.mb-3p select {
+        padding-left: 38px;
+        
+      }
+      *{
+        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      }
+      
+    </style>
+
+  </head>
+  <body>
+      
+    {% block content %}{% endblock content %}
+   
+
+    <script src="{% static 'js/jquery-3.js' %}" ></script>
+    <script src="{% static 'js/popper.js' %}" ></script>
+    <script src="{% static 'js/bootstrap.js' %}" ></script>
+  </body>
+</html>

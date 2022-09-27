@@ -1,0 +1,44 @@
+{% extends 'base2.html' %}
+
+{% block title %}  
+{% endblock title %}
+{% block styles %}
+    <style>
+        .mybg{
+            margin-top: 60px;
+            background-color: rgba(248, 236, 3, 0.676);
+        }
+        .p{
+            display: flex;
+            justify-content: right;
+        }
+    </style>
+{% endblock styles %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5 col-sm-6">
+        <div class="container">
+            <div class="card mybg bg-light">
+                <div class="card-header">
+                    <strong>Confirlation de supression</strong>
+                </div>
+                <div class="card-body">
+                    voulez vous supprimer l'utilisateur <strong> {{users}} </strong> ?
+                    <div class="col my-3">
+                        <div class="row">
+                            <div class="col-6 justify-content-space-between">
+                                <a href="{% url 'delete_user' users.id %}" class="btn btn-danger">Oui</a>
+                            </div>
+                            <div class="col-6 p">
+                                <a href="{% url 'users' %}" class="btn btn-primary">Non</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}{% endblock scripts %}

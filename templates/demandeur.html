@@ -1,0 +1,618 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}  
+{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/images.css' %}">
+
+
+{% endblock styles %}
+
+{% block content %}
+
+{% if Mod %} <h3 class="m-3">Modifier </h3> {{demandeur}}
+{% else %}
+<h3 class="m-3">Ajoutez un demandeur</h3>
+{% endif %}
+
+<hr>
+<a href="{% url 'home' %}" class="btn btn-secondary mx-3 my-3"> <i class="icopp fa fa-arrow-circle-left" aria-hidden="true"></i>  Retour</a>
+
+<form action="" method="POST" enctype="multipart/form-data" novalidate autocomplete="off">
+  {% csrf_token %}
+
+  <div class="container-fluid mt-2">
+    <div class="row">
+      <div class="col-md-7 mb-3">
+        <div class="card mt-2">
+          <h4 class="card-header">Formulaire demandeur</h4>
+          <div class="card-body">
+
+            <div class="mb-3p">
+              {{ formDemandeur.Type_paiement|as_crispy_field}}
+              <i class="icopp fas fa-money-check    "></i>
+            </div>
+
+            <div class="mb-3p">
+              {{ formDemandeur.Civilite|as_crispy_field}}
+              <i class="icopp fas fa-transgender    "></i>
+            </div>
+
+            <div class="mb-3p">
+              {{ formDemandeur.Noms_demandeur|as_crispy_field}}
+              <i class="icopp fas fa-user"></i>
+            </div>
+            <div class="mb-3p">
+              {{ formDemandeur.Prenom_demandeur|as_crispy_field}}
+              <i class="icopp fas fa-user"></i>
+            </div>
+            <div class="mb-3p">
+              {{ formDemandeur.Date_de_naissance|as_crispy_field}}
+              <i class="icopp fas fa-calendar"></i>
+            </div>
+            <div class="mb-3p">
+              {{ formDemandeur.Lieu_de_Naissance|as_crispy_field}}
+              <i class="icopp fas fa-city    "></i>
+            </div>
+            <div class="">
+              <div class="div mb-3p">
+                {{ formDemandeur.Ville_origine|as_crispy_field}}
+                <i class="icopp fas fa-city "></i>
+              </div>
+
+              <div class="div">
+                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  <i class="fa fa-plus" aria-hidden="true"> </i> Ajouter une ville
+                </button>
+              </div>
+
+            </div>
+            <div class="mb-3p">
+              {{ formDemandeur.Situation_famille|as_crispy_field}}
+              <i class="icopp fas fa-user-friends    "></i>
+            </div>
+            <div class="">
+              <div class="mb-3p">
+                {{ formDemandeur.Profession|as_crispy_field}}
+                <i class="icopp fas fa-user"></i>
+              </div>
+
+              <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+                <i class="fa fa-plus" aria-hidden="true"> </i> Ajouter une profession
+              </button>
+
+            </div>
+            <div class="">
+              <div class="mb-3p">
+                {{ formDemandeur.Employeur|as_crispy_field}}
+                <i class="icopp fas fa-user"></i>
+              </div>
+              <div class="div">
+                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop4">
+                  <i class=" fa fa-plus" aria-hidden="true"> </i> Ajouter un employeur
+                </button>
+              </div>
+            </div>
+            <div class="mb-3p">
+              {{ formDemandeur.Adresse|as_crispy_field}}
+              <i class="icopp fas fa-user"></i>
+            </div>
+            <div class="mb-3p">
+              {{ formDemandeur.Email|as_crispy_field}}
+              <i class="icopp fas fa-mail-bulk    "></i>
+            </div>
+            <div class="mb-3p">
+              {{ formDemandeur.Tel|as_crispy_field}}
+              <i class="fa fa-phone icopp" aria-hidden="true"></i>
+            </div>
+            <div class="mb-3p">
+              {{ formDemandeur.Numero_identite|as_crispy_field}}
+              <i class="icopp fas fa-user"></i>
+            </div>
+            <div class="mb-3p">
+              {{ formDemandeur.Numero_compte_bancaire|as_crispy_field}}
+              <i class="icopp fas fa-user"></i>
+            </div>
+            <div class="">
+              <div class="col mb-3p">
+                {{ formDemandeur.Nom_banque|as_crispy_field}}
+                <i class="icopp fas fa-user"></i>
+              </div>
+              <div class="div">
+                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">
+                  <i class=" fa fa-plus" aria-hidden="true"> </i> Ajouter une banque
+                </button>
+              </div>
+            </div>
+
+           
+             
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-5">
+        <div class="card mt-2">
+          <h4 class="card-header">Engagement client</h4>
+          <div class="card-body">
+            
+             {{ formEngagement_Client |crispy}}
+          </div>
+        </div>
+        
+        <div class="card mt-3">
+          <h4 class="card-header">Revenu du demandeur</h4>
+          <div class="card-body">
+
+            <div class="mb-3p">
+              {{ formRevenuHomme.Nature |as_crispy_field}}
+              <i class="icopp fas fa-money-bill"></i>
+            </div>
+
+            <div class="mb-3p">
+              {{ formRevenuHomme.Montant |as_crispy_field}}
+              <i class="icopp fas fa-money-bill"></i>
+            </div>
+            
+          </div>
+        </div>
+
+        <div class="card mt-3" id="revenuconjoint">
+          <h4 class="card-header">Revenu du conjoint</h4>
+          <div class="card-body">
+
+            <div class="mb-3p">
+              {{ formRevenuFemme.Nature |as_crispy_field}}
+              <i class="icopp fas fa-money-bill"></i>
+            </div>
+
+            <div class="mb-3p">
+              {{ formRevenuFemme.Montant |as_crispy_field}}
+              <i class="icopp fas fa-money-bill"></i>
+            </div>
+             
+          </div>
+        </div>
+
+        <div class="card mt-3">
+          <h4 class="card-header">Enfant légitime </h4>
+          <div class="card-body">
+            <div class="mb-3p">
+              {{ formEnfant_legitime.Nom |as_crispy_field}}
+              <i class="icopp fas fa-user"></i>
+            </div>
+
+            <div class="mb-3p">
+              {{ formEnfant_legitime.Prenom|as_crispy_field}}
+              <i class="icopp fas fa-user"></i>
+            </div>
+            <div class="mb-3p">
+              {{ formEnfant_legitime.Sexe  |as_crispy_field}}
+              <i class="icopp fas fa-transgender    "></i>
+            </div>
+            <div class="mb-3p">
+              {{ formEnfant_legitime.Date_naiss |as_crispy_field}}
+                <i class="icopp fa fa-calendar" aria-hidden="true"></i>
+            </div>
+            <div class="mb-3p">
+              {{ formEnfant_legitime.Lieu_naiss  |as_crispy_field}}
+              <i class="icopp fas fa-city    "></i>
+            </div>
+            <div class="mb-3p">
+              {{ formEnfant_legitime.Niveau_scolaire_ou_profession  |as_crispy_field}}
+              <i class="icopp fa fa-graduation-cap" aria-hidden="true"></i>
+            </div>
+
+             
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="card mt-3">
+          <h4 class="card-header">Engangement Bancaire</h4>
+          <div class="card-body">
+             {{ formEngagement_Financier |crispy}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid mt-3 mb-3">
+    <div class="row">
+      <div class="col-md-12">
+        
+        <div class="card mt-4" id="formconjoint">
+          <h4 class="card-header">Formulaire conjoint</h4>
+          <div class="card-body">
+             {{ formConjoint |crispy}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="card mt-3">
+          <h4 class="card-header">Pièces jointes </h4>
+          <div class="card-body">
+             {% for item in  formPieces_Jointes %}
+                <div class="mb-3 mt-3 imgf">
+                  <div class="row">
+                      <div class="col-lg-12">
+                        {{ item |as_crispy_field}}          
+                      </div>  
+                  </div>
+                </div>
+             {% endfor %}
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+ 
+
+ <div class="mb-5 mx-3 mt-3">
+  <input type="submit" class="btn btn-success m-auto" value="Enregistrer" id="check">
+ </div>
+
+ <div class="loader" id="loader">
+  <div class="cont">
+      <div class="spinner-border text-success" role="status">
+      </div>
+      <span class="ml-2">  Chargement...</span>
+  </div>
+</div>
+
+</form>
+
+<!--  LOADER  -->
+
+
+
+<!-- END LOADER -->
+<!-- modal add ville -->
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Ajouter une ville</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form  method="post"  id="Formulaire_ville">
+            {% csrf_token %}
+
+            {{formVille |crispy}}
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">fermer</button>
+              <button type="button" class="btn btn-success" id="AddVillebtn">Enregistrer</button>
+              
+            </div>
+
+          </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Ajouter une profession</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="addprofession" method="post" id="Formulaire_profession">
+            {% csrf_token %}
+
+            {{formprofession |crispy}}
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">fermer</button>
+              <button type="button" class="btn btn-primary" id="btn_submit_profession">Enregistrer</button>
+              
+            </div>
+
+          </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Ajouter une banque</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form id="formulaire_banque" method="post">
+            {% csrf_token %}
+
+            {{formBanque |crispy}}
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">fermer</button>
+              <button type="button" class="btn btn-success" id="btn_submit_banque">Enregistrer</button>
+              
+            </div>
+
+          </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Ajouter un employeur</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="addprofession" method="post" id="Formulaire_employeur">
+            {% csrf_token %}
+
+            {{formEmployeur |crispy}}
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">fermer</button>
+              <button type="button" class="btn btn-primary" id="btn_submit_employeur">Enregistrer</button>
+              
+            </div>
+
+          </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Button trigger modal -->
+
+
+
+
+
+<script type="text/javascript" src="{% static 'js/jquery-3.js' %}"></script>
+    
+    
+{% endblock content %}
+
+{% block scripts %}
+    <!-- condition pour l'affichage des champ conjount et consort -->
+    <script>
+
+      
+      statutMat = document.querySelector('.statutMat');
+      formconjoint = document.getElementById('formconjoint');
+      revenuconjoint = document.getElementById('revenuconjoint');
+      Is_first = true;
+      function Start(){
+        Is_first = false;
+        statut = statutMat.value  
+        all = formconjoint.querySelectorAll('input, select');
+        allR = revenuconjoint.querySelectorAll('input, select')
+        if(statut == 'VE' || statut == 'CE'){
+          if(statut == 'CE'){
+            alert('continuer en tant que célibataire');
+          }
+          else{
+            alert('continuer en tant que personne veuf(ve)');
+          }
+          
+          
+          for(var i = 0; i<all.length; i++){
+            item = all[i];
+            item.disabled =true
+          }
+
+          for(var i = 0; i<allR.length; i++){
+            item = allR[i];
+            item.disabled =true
+            item.required = false;
+          }
+        }
+          else{
+            alert('continuer en tant que personne marié');
+            for(var i = 0; i<all.length; i++){
+              item = all[i];
+              item.disabled =false;
+            }
+
+            for(var i = 0; i<allR.length; i++){
+              item = allR[i];
+              item.disabled =false;
+              item.required = true;
+            }
+          }
+      }
+      statutMat.addEventListener('change', ()=>{
+        Start();
+      });
+      if(Is_first)
+      {
+
+      }
+      else{
+        Start();
+      }
+    </script>
+    <script>
+      var check = document.getElementById('check');
+      var loader = document.getElementById('loader');
+      check.onclick = function(){
+          loader.style.display = "flex";
+      }
+    </script>
+    <script>
+      
+
+      function showPreview(event){
+        if(event.target.files.length > 0){
+          var src = URL.createObjectURL(event.target.files[0]);
+          var preview = document.getElementById("id_Demande_logement");
+          preview.src = src;
+          preview.style.display = "block";
+        }
+      }
+      
+    
+    </script>
+    <script src="{% static 'js/ajax_demndeur.js' %}"></script>
+    <script>
+      $(document).ready(function(){
+
+        $('#Formulaire_ville').on('submit', function(e){
+          e.preventDefault();
+          save_data2();
+        });
+
+        $('#AddVillebtn').click(function(){
+          save_data2();
+
+        });
+      });
+      function save_data2(){
+        var data_serialize = $("#Formulaire_ville").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addVille' %}",
+                data: data_serialize,
+                success: function(response){
+                    alert('Ville Ajoutée avec success');
+                    $('#Formulaire_ville')[0].reset();
+                    $('#id_Ville_origine').append('<option value="'+ response.new_ville.id+'"> '+response.new_ville.ville+' </option>');
+                    $('#id_Lieu_de_Naissance').append('<option value="'+ response.new_ville.id+'"> '+response.new_ville.ville+' </option>');
+                    $("#staticBackdrop").modal('hide');
+                },  
+                error: function(response){
+                alert('Erreur veuillez verifier votre formulaire');
+                }
+            });
+        
+      }
+    </script>
+
+
+
+    <script>
+      $(document).ready(function(){
+        $('#Formulaire_profession').on('submit', function(e){
+          e.preventDefault();
+          save_data3();
+        });
+
+        $('#btn_submit_profession').click(function(){
+          save_data3();
+        });
+      });
+      function save_data3(){
+        var data_serialize = $("#Formulaire_profession").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addprofession' %}",
+                data: data_serialize,
+                success: function(response){
+                    alert('Profession Ajoutée avec success');
+                    $('#Formulaire_profession')[0].reset();
+                    $('#id_Profession').append('<option value="'+ response.new_prosession.id+'"> '+response.new_prosession.profession+' </option>');
+                    $("#staticBackdrop2").modal('hide');
+                  
+                },  
+                error: function(response){
+                alert('Erreur veuillez verifier votre formulaire');
+                }
+            });
+       
+      }
+    </script>
+
+    <script>
+      $(document).ready(function(){
+          $('#Formulaire_employeur').on('submit', function(e){
+            e.preventDefault();
+            save_dataemp();
+          });
+        });
+        $('#btn_submit_employeur').click(function(){
+          save_dataemp();
+        
+      });
+      function save_dataemp(){
+        var data_serialize = $("#Formulaire_employeur").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addempoyeur' %}",
+                data: data_serialize,
+                success: function(response){
+                    alert('Employeur Ajouté avec success');
+                    $('#Formulaire_employeur')[0].reset();
+                    $('#id_Employeur').append('<option value="'+ response.new_employeur.id+'"> '+response.new_employeur.employeur+' </option>');
+                    $("#staticBackdrop4").modal('hide');
+                  
+                },  
+                error: function(response){
+                alert('Erreur veuillez verifier votre formulaire');
+                }
+            });
+    }
+    </script>
+
+
+
+    <script>
+      $(document).ready(function(){
+        $('#formulaire_banque').on('submit', function(e){
+          e.preventDefault();
+          save_data();
+        });
+        $('#btn_submit_banque').click(function(){
+          save_data();
+        });
+      });
+      function save_data(){
+        var data_serialize = $("#formulaire_banque").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addbanque' %}",
+                data: data_serialize,
+                success: function(response){
+                    alert('Banque Ajoutée avec success');
+                    $('#formulaire_banque')[0].reset();
+                    $('#id_Nom_banque').append('<option value="'+ response.new_banque.id+'"> '+response.new_banque.banque+' </option>');
+                    $("#staticBackdrop3").modal('hide');
+                  
+                },  
+                error: function(response){
+                alert('Erreur veuillez verifier votre formulaire');
+                }
+            });
+      }
+    </script>
+
+    <!-- gestion de la prévisualisation des images -->
+    
+    
+    
+{% endblock scripts %}

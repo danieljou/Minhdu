@@ -1,0 +1,252 @@
+{% extends 'cfc_base.html' %}
+
+{% block title %}  
+{% endblock title %}
+{% block styles %}{% endblock styles %}
+{% block content %}
+
+<h3 class="m-4"> CFC - Demandeurs</h3>
+<hr>
+    <a href="{% url 'cfc_home' %}" class="btn btn-secondary">Revenir à la liste</a>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                       <div class="row">
+                        <div class="col-6">demandeur <strong>  {{demandeur}} </strong></div>
+                        <div class="col-6">Pièces jointes <strong> {{demandeur.getPieceNumber}} / {{demandeur.getTotalPieces}} </strong> </div>
+                       </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row p-3">
+                          <div class="">
+                            {% if accord %}
+                                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                  <i class="fa fa-plus" aria-hidden="true"></i> Voir la decision
+                                </button>
+                            {% endif %}
+                           
+                            
+                          <br> <br>  
+                          <p><strong> Pièces manquante </strong> </p>
+
+                            <ul>
+                                {% for item in demandeur.PieceManquantes %}
+                                  <li> {{item}} </li>
+                                {% empty %}
+                                  <strong>  Dossier Complet </strong>
+                                {% endfor %}
+                            </
+                            
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="col-md-12 ml-5 mb-3">
+                <table> 
+                    <tr>
+                      <td> Type de paiement </td>
+                      <td> <strong> : {{demandeur.Type_paiement}}</strong> </td>
+                    </tr>
+                  <tr>    
+                      <td> Nom </td> <td><strong> : {{ demandeur }} </strong> </td>  
+                  </tr>
+                  <tr>    
+                      <td> Prénom </td> <td><strong> : {{ demandeur.Prenom_demandeur }} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td> Date de naissance </td> <td><strong> : {% if demandeur.Date_de_naissance %} {{ demandeur.Date_de_naissance |date}} {% endif %}  </strong> </td>
+                  </tr> 
+                  <tr>    
+                      <td> Lieu de naissance </td> <td><strong> : {% if demandeur.Lieu_de_Naissance %} {{ demandeur.Lieu_de_Naissance }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td> Profession </td> <td><strong> : {% if demandeur.Profession %} {{ demandeur.Profession }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td> Employeur </td> <td><strong> : {% if demandeur.Employeur %} {{ demandeur.Employeur }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td> Email </td> <td><strong> : {% if demandeur.Email %} {{ demandeur.Email }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td> Télephone </td> <td><strong> : {% if demandeur.Tel %} {{ demandeur.Tel }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td> N° Identité </td> <td><strong> : {% if demandeur.Numero_identite %} {{ demandeur.Numero_identite }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td width="35%"> N° Compte bancaire </td> <td><strong> : {% if demandeur.Numero_compte_bancaire  %} {{ demandeur.Numero_compte_bancaire   }} {% endif %} </strong> </td>
+                  </tr>
+                  <tr>    
+                      <td> Banque </td> <td><strong> : {% if demandeur.Nom_banque %} {{ demandeur.Nom_banque }} {% endif %} </strong> </td>
+                  </tr>
+                </table>
+            </div>
+
+           
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Pièces jointes</strong>
+                </div>
+                
+                <div class="card-body">
+                            
+                        <div class="">
+                          
+                          <strong>Attestation de travail </strong>
+                          {% if demandeur.Fichiers_joint.Attestation_travail %}
+                          <img src="{{ demandeur.Fichiers_joint.Attestation_travail.url }}" class="d-block w-100" alt="...">
+                          {%else%}
+                            <br> <div class="badge bg-danger"> Document nom présent</div>
+
+                            <br>
+                            <br>
+                          {% endif %}
+                        </div>
+
+                        <br>
+                        <hr>
+      
+                        <div class="">
+                          <strong>Attestation de presence effective cfc </strong>
+                          {% if demandeur.Fichiers_joint.Attestation_presence_effective_cfc %}
+                          <img src="{{ demandeur.Fichiers_joint.Attestation_presence_effective_cfc.url }}" class="d-block w-100" alt="...">
+                          {%else%}
+                            <br> <div class="badge bg-danger"> Document nom présent</div>
+
+                            <br>
+                            <br>
+                          {% endif %}
+                        </div>
+
+                        <br>
+                        <hr>
+      
+                        <div class="">
+                          <strong> Bulletin de paie 1 cfc </strong>
+                          {% if demandeur.Fichiers_joint.Bulletin_paie1_cfc %}
+                          <img src="{{ demandeur.Fichiers_joint.Bulletin_paie1_cfc.url }}" class="d-block w-100" alt="...">
+                          {%else%}
+                            <br> <div class="badge bg-danger"> Document nom présent</div>
+
+                            <br>
+                            <br>
+                          {% endif %}
+                        </div>
+
+                        <br>
+                        <hr>
+      
+                        <div class="">
+                          <strong> Bulletin de paie 2 cfc </strong>
+                          {% if demandeur.Fichiers_joint.Bulletin_paie2_cfc %}
+                          <img src="{{ demandeur.Fichiers_joint.Bulletin_paie2_cfc.url }}" class="d-block w-100" alt="...">
+                          {%else%}
+                            <br> <div class="badge bg-danger"> Document nom présent</div>
+
+                            <br>
+                            <br>
+                          {% endif %}
+                        </div>
+
+                        <br>
+                        <hr>
+      
+                        <div class="">
+                          <strong>Bulletin de paie 3 cfc </strong>
+                          {% if demandeur.Fichiers_joint.Bulletin_paie3_cfc %}
+                          <img src="{{ demandeur.Fichiers_joint.Bulletin_paie3_cfc.url }}" class="d-block w-100" alt="...">
+                          {%else%}
+                            <br> <div class="badge bg-danger"> Document nom présent</div>
+
+                            <br>
+                            <br>
+                          {% endif %}
+                        </div>
+
+                        <br>
+                        <hr>
+                        <div class="">
+                          <strong> Engagement sur honneur payer apport perso cfc </strong>
+                          {% if demandeur.Fichiers_joint.Engagement_sur_honneur_payer_apport_perso_cfc %}
+                          <img src="{{ demandeur.Fichiers_joint.Engagement_sur_honneur_payer_apport_perso_cfc.url }}" class="d-block w-100" alt="...">
+                          {%else%}
+                            <br> <div class="badge bg-danger"> Document nom présent</div>
+
+                            <br>
+                            <br>
+                          {% endif %}
+                        </div>
+
+                        <br>
+                        <hr>
+      
+                        <div class="">
+                          <strong> Engagement sur honneur payer comptant cfc </strong>
+                          {% if demandeur.Fichiers_joint.Engagement_sur_honneur_payer_comptant_cfc %}
+                          <img src="{{ demandeur.Fichiers_joint.Engagement_sur_honneur_payer_comptant_cfc.url }}" class="d-block w-100" alt="...">
+                          {%else%}
+                            <br> <div class="badge bg-danger"> Document nom présent</div>
+
+                            <br>
+                            <br>
+                          {% endif %}
+                        </div>
+
+                        <br>
+                        <hr>
+      
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Décision</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+              {% if accord.Avis %}
+                Avis   <strong>  Favorable </strong>
+              {% else %}
+                Avis  <strong>  Défavorable </strong>
+              {% endif %}
+              <div class="d-none d-sm-block">
+                Commantaire : 
+                <strong>  {{accord.commentaire}} </strong>
+              </div>
+              
+            {% if accord.Justificatif %}
+              <img src="{{ accord.Justificatif.url}}" alt="">
+            {% endif %}
+
+          </div>
+         
+        </div>
+      </div>
+    </div>
+
+
+{% endblock content %}
+
+{% block scripts %}
+
+{% endblock scripts %}

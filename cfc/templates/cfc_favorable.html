@@ -1,0 +1,38 @@
+{% extends 'cfc_base.html' %}
+
+{% load crispy_forms_tags %}
+{% block title %}  
+{% endblock title %}
+{% block styles %}{% endblock styles %}
+{% block content %}
+<div class="row justify-content-center mt-3">
+    <div class="col-md-8 col-sm-6">
+        <div class="container">
+            <div class="card mybg">
+                <div class="card-header">
+                    <strong>Confirlation de validation de la demande</strong>
+                </div>
+                <div class="card-body">
+                    demande de <strong>  {{demandeur}} </strong>
+                    <hr>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% for item in form %}
+                            <div class="mb-3">
+                                {{item |as_crispy_field}}
+                            </div>
+                        {% endfor %}
+
+                        <input type="submit" value="Valider" class="btn btn-success">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+
+
+{% endblock scripts %}

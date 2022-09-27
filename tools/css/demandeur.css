@@ -1,0 +1,10 @@
+.modal-content.mod{
+    min-width: 700px;
+}
+
+.btn-slider{
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    border: none;
+}
