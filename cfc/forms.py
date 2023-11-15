@@ -10,11 +10,11 @@ from django.forms import (
 )
 from django.conf import settings
 
-
+from main.models import *
 class AccordForm(forms.ModelForm):
     
     class Meta:
-        model = Accord
+        model = Accord_cfc
         exclude = ('demande',)
 
         widgets = {

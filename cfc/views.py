@@ -86,8 +86,8 @@ def custum(request, demandeur_slug):
     demandeur = Demandeur.objects.get(slug = demandeur_slug)
     accord = None
     try:
-        accord = Accord.objects.get(demande = demandeur.id)
-    except Accord.DoesNotExist:
+        accord = Accord_cfc.objects.get(demande = demandeur.id)
+    except Accord_cfc.DoesNotExist:
         go = None
 
     

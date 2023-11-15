@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import *
 from .decorators import *
-
+from main.models import *
 # Create your views here.
 
 @login_required
@@ -13,7 +13,7 @@ from .decorators import *
 def index(request):
     context = {}
     context['users'] = True
-    allusers = User.objects.exclude(id = request.user.id)
+    allusers = Utilisateur.objects.exclude(id = request.user.id)
     context['allusers'] = allusers
     return render(request,'index.html',context)
 
@@ -38,7 +38,7 @@ def add_form(request):
 
 def user_mod(request,user_id):
     
-    users = User.objects.get(pk =user_id)
+    users = Utilisateur.objects.get(pk =user_id)
     context = {}
     form_user = FormUserMod(request.POST or None, request.FILES or None,instance = users )
     if(request.method == 'POST'):

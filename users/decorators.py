@@ -7,7 +7,10 @@ from .models import *
 def is_admin_required(function):
     @wraps(function)
     def wrap(request, *args, **kwargs):
-        profile = request.user
+        profile = request.user 
+        
+        # roles = request.user.groups
+        # if 'role' in roles
        
         if(profile.role == 'Administrateur'):
             return function(request, *args, **kwargs)

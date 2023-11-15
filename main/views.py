@@ -163,61 +163,69 @@ def formdemandeur(request):
         # if(request.POST['villeA']):
         #     if(formVille.is_valid()):
         #         formVille.save()
-        if (formDemandeur.is_valid() and formEngagement_Client.is_valid()
-            and formRevenuFemme.is_valid() and formRevenuHomme.is_valid()
-            and formEnfant_legitime.is_valid() and formConjoint.is_valid()
-            and formPieces_Jointes.is_valid() and formEngagement_Financier.is_valid()
+        # if (formDemandeur.is_valid() and formEngagement_Client.is_valid()
+        #     and formRevenuFemme.is_valid() and formRevenuHomme.is_valid()
+        #     and formEnfant_legitime.is_valid() and formConjoint.is_valid()
+        #     and formPieces_Jointes.is_valid() and formEngagement_Financier.is_valid()
+        # ):
+        if (formDemandeur.is_valid() 
         ):
        
         
            
             engagementclient = formEngagement_Client.save()
             fianc = formEngagement_Financier.save()
-            revenufemme = formRevenuFemme.save()
+            # revenufemme = formRevenuFemme.save()
             revenuhomme = formRevenuHomme.save()
 
-            El = False
-            if(formEnfant_legitime.cleaned_data['Nom'] != None):
+            # El = False
+            # if(formEnfant_legitime.cleaned_data['Nom'] != None):
 
-                Enfant_legitm = formEnfant_legitime.save()
-                El = True
-            Cj = False
-            if( formConjoint.cleaned_data['Nom_conjoint'] != None):
+            #     Enfant_legitm = formEnfant_legitime.save()
+            #     El = True
+            # Cj = False
+            # if( formConjoint.cleaned_data['Nom_conjoint'] != None):
         
-                conjoint = formConjoint.save(commit = False)
-                conjoint.Revenu_femme = revenufemme
-                conjoint.save()
-                Cj = True
+            #     conjoint = formConjoint.save(commit = False)
+            #     conjoint.Revenu_femme = revenufemme
+            #     conjoint.save()
+            #     Cj = True
             
             
 
 
-            pieces = formPieces_Jointes.save()
+            pieces = formPieces_Jointes.save(commit = False)
             
             demandeur = formDemandeur.save(commit = False)
             demandeur.createur = request.user
-            if(Cj):
-                demandeur.Conjoint_vie = conjoint
-            if(El):
-                demandeur.Enfant_leg = Enfant_legitm
-            demandeur.Engagement = engagementclient
-            demandeur.Engagement_bancaire = fianc
-            demandeur.Fichiers_joint = pieces
-            demandeur.Revenu_homme = revenuhomme
+            demandeur.revenu = revenuhomme
+            
+          
+            # if(Cj):
+            #     demandeur.Conjoint_vie = conjoint
+            # if(El):
+            #     demandeur.Enfant_leg = Enfant_legitm
+            # demandeur.Engagement = engagementclient
+            # demandeur.Engagement_bancaire = fianc
+            # demandeur.Fichiers_joint = pieces
+            # demandeur.Revenu_homme = revenuhomme
 
             demandeur.save()
+            pieces.demande = demandeur
+            pieces.save()
             messages.success(request, "Demandeur ajouté avec succèss")
             return redirect('home')
 
         else:
-             messages.error(request, "Erreur veuillez remplir tout les champs requis")
+            print(formDemandeur.errors)
+            messages.error(request, "Erreur veuillez remplir tout les champs requis")
     # passing form in context
     context['formDemandeur'] = formDemandeur
     context['formEngagement_Client'] = formEngagement_Client
-    context['formRevenuFemme'] = formRevenuFemme
+    # context['formRevenuFemme'] = formRevenuFemme
     context['formRevenuHomme'] = formRevenuHomme
-    context['formEnfant_legitime'] = formEnfant_legitime
-    context['formConjoint'] = formConjoint
+    # context['formEnfant_legitime'] = formEnfant_legitime
+    # context['formConjoint'] = formConjoint
     context['formPieces_Jointes'] = formPieces_Jointes
     context['formEngagement_Financier'] = formEngagement_Financier
 
@@ -252,16 +260,16 @@ def ViewDemandeur(request, demandeur_id):
     context = {}
     context['DEVISE'] = 'FCFA'
     demandeur = Demandeur.objects.get(slug = demandeur_id)
-    if(demandeur.Conjoint_vie == None):
-        conjoint = "Pas DE CONJOINT "
-        revenuFemme = 'pas de conjoint'
-    else:
-        conjoint = Conjoint.objects.get( pk = demandeur.Conjoint_vie.id)
-        revenuFemme = Revenu_mensuel.objects.get(pk = conjoint.Revenu_femme.id)
-    piecesjointes = Pieces_Jointes.objects.get(pk = demandeur.Fichiers_joint.id)
+    # if(demandeur.Conjoint_vie == None):
+    #     conjoint = "Pas DE CONJOINT "
+    #     revenuFemme = 'pas de conjoint'
+    # else:
+    #     conjoint = Conjoint.objects.get( pk = demandeur.Conjoint_vie.id)
+    #     revenuFemme = Revenu_mensuel.objects.get(pk = conjoint.Revenu_femme.id)
+    piecesjointes = Pieces_Jointes.objects.get(demande = demandeur)
     context['home'] = True
     context['demandeur'] = demandeur
-    context['revenuFemme'] = revenuFemme
+    # context['revenuFemme'] = revenuFemme
     return render(request, 'custumdemandeur.html', context)
 
 
@@ -708,9 +716,8 @@ def addprofession(request):
     formprofession = ProfessionForm(request.POST)
     if formprofession.is_valid():
         new_prosession = formprofession.save()
-        
-        return JsonResponse({'new_prosession': model_to_dict(new_prosession)
-            
+        return JsonResponse(
+            {'new_prosession': model_to_dict(new_prosession)
         }, status = 200)
 @login_required
 @is_gestionnaire_required
@@ -741,20 +748,20 @@ def demandeurPdf(request, demandeur_slug):
     template = get_template('pdf2.html')
 
     demandeur = Demandeur.objects.get(slug = demandeur_slug)
-    if(demandeur.Conjoint_vie == None):
-        conjoint = "Pas DE CONJOINT "
-        revenuFemme = 'pas de conjoint'
-    else:
-        conjoint = Conjoint.objects.get( pk = demandeur.Conjoint_vie.id)
-        revenuFemme = Revenu_mensuel.objects.get(pk = conjoint.Revenu_femme.id)
-    piecesjointes = Pieces_Jointes.objects.get(pk = demandeur.Fichiers_joint.id)
+    # if(demandeur.Conjoint_vie == None):
+    #     conjoint = "Pas DE CONJOINT "
+    #     revenuFemme = 'pas de conjoint'
+    # else:
+    #     conjoint = Conjoint.objects.get( pk = demandeur.Conjoint_vie.id)
+    #     revenuFemme = Revenu_mensuel.objects.get(pk = conjoint.Revenu_femme.id)
+    piecesjointes = Pieces_Jointes.objects.get(demande = demandeur)
     
     
     
     context = {}
     context['DEVISE'] = 'Fcfa'
     context['demandeur'] = demandeur
-    context['revenuFemme'] = revenuFemme
+    # context['revenuFemme'] = revenuFemme
     html = template.render(context)
     options = {
         'page-size': 'Letter',
@@ -783,21 +790,24 @@ def dash(request):
     nblogement = Logement_social.objects.count()
     nbappimme = Immeuble.objects.count()
     nb_nom_traite = Demandeur.objects.filter(Etat_demandes = False).count()
-    nb_nom_accorde = Decision_comite_attribution.objects.filter(Favorable = False).count()
-    nb_accorde = Decision_comite_attribution.objects.filter(Favorable = True).count()
-    
+    # nb_nom_accorde = Decision_comite_attribution.objects.filter(Favorable = False).count()
+    nb_nom_accorde = 1
+    # nb_accorde = Decision_comite_attribution.objects.filter(Favorable = True).count()
+    nb_accorde = 1
     nbdecision = Decision_comite_attribution.objects.count()
     nbappart_occupe = Appartement.objects.filter(Vide = False).count()
     nbappart_libre = Appartement.objects.filter(Vide = True).count()
-    porcentage_occupation = (nbappart_occupe * 100) / (nbappart_libre + nbappart_occupe)
-    
+    try:
+        porcentage_occupation = (nbappart_occupe * 100) / (nbappart_libre + nbappart_occupe) or None
+    except:
+        porcentage_occupation = 0
     context['nbdemandeur'] = nbdemandeur
     context['nbappart'] = nbappart
     context['nbappimme'] = nbappimme
     context['nblogement'] = nblogement
     context['nbappart_occupe'] = nbappart_occupe
     context['nbappart_libre'] = nbappart_libre
-    context['porcentage_occupation'] = round(porcentage_occupation,2)
+    context['porcentage_occupation'] =porcentage_occupation
     context['nbdecision'] = nbdecision
     context['nb_nom_traite'] = nb_nom_traite
     context['nb_nom_accorde'] = nb_nom_accorde
@@ -819,7 +829,7 @@ def profile(request):
    
     context['profile'] = True
     
-    account = User.objects.get(id = request.user.id)
+    account = Utilisateur.objects.get(id = request.user.id)
     role = account.role
     formProfileMod =   UserProfileMod(request.POST or None, request.FILES or None , instance = request.user, )
     if request.method == 'POST':

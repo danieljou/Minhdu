@@ -35,6 +35,7 @@ class DemandeurForm(forms.ModelForm):
             'Publie_le', 'Statut',
             'info_cfc',     
             'Etat_demandes',
+            'revenu'
 
             )
         
@@ -76,6 +77,7 @@ class Engagement_ClientForm(forms.ModelForm):
     class Meta:
         model = Engagement_Client
         fields = ('__all__')
+        # exclude =  ['demande']        
 
 class RevenuFemmeForm(forms.ModelForm):
     
@@ -105,14 +107,15 @@ class ConjointForm(forms.ModelForm):
     
     class Meta:
         model = Conjoint
-        exclude = ('Revenu_femme', 'Matricule_conjoint', )
-        fields = ('__all__')
+        # fields = ('__all__')
+        exclude =['demande', 'Matricule_conjoint','Revenu']
 
 class Pieces_JointesForm(forms.ModelForm):
     
     class Meta:
         model = Pieces_Jointes
-        fields = ('__all__')
+        # fields = ('__all__')
+        exclude = ['demande']
        
 
 class Engagement_FinancierForm(forms.ModelForm):
@@ -120,6 +123,7 @@ class Engagement_FinancierForm(forms.ModelForm):
     class Meta:
         model = Engagement_Financier
         fields = ('__all__')
+        # exclude = ['demande']
         labels = {
             'Jusquen':'Date de fin',
         }

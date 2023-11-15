@@ -11,7 +11,7 @@ from django.forms import (
 from django.contrib.auth.forms import UserCreationForm,UserChangeForm
 from django.conf import settings
 
-
+from main.models import *
 
 class FormUser(UserCreationForm):
     email = forms.EmailField(required=True, max_length=100)
@@ -19,8 +19,8 @@ class FormUser(UserCreationForm):
    
     
     class Meta:
-        model = User
-        fields = ( 'role', 'Avatar','username','last_name','first_name','email','password1','password2')
+        model = Utilisateur
+        fields = [ 'role','username','last_name','first_name','email','password1','password2']
         widgets = {
             'last_name': forms.TextInput(),
             'role': Select(attrs = {
@@ -35,8 +35,8 @@ class FormUser2(UserCreationForm):
    
     
     class Meta:
-        model = User
-        fields = ( 'Avatar','username','last_name','first_name','email','password1','password2')
+        model = Utilisateur
+        fields = ( 'username','last_name','first_name','email','password1','password2')
         widgets = {
             'last_name': forms.TextInput(),
             'role': Select(attrs = {
@@ -51,8 +51,8 @@ class FormUserMod(UserCreationForm):
    
     
     class Meta:
-        model = User
-        fields = ('Avatar','username','last_name','first_name','email')
+        model = Utilisateur
+        fields = ('username','last_name','first_name','email')
         exlude = ('password1','password2',)
         widgets = {
             'last_name': forms.TextInput()
@@ -65,7 +65,7 @@ class UserProfileMod(forms.ModelForm):
    
     
     class Meta:
-        model = User
+        model = Utilisateur
         fields = ('username','last_name','first_name','email')
         exlude = ('password1','password2',)
         widgets = {

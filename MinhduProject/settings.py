@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'cfc',
     'crispy_forms',
     'widget_tweaks',
-    'bootstrap_datepicker_plus',
+    # 'bootstrap_datepicker_plus',
     'django.contrib.humanize',
 ]
 
@@ -74,12 +74,12 @@ WSGI_APPLICATION = 'MinhduProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.posgressql',
-        'NAME':'DATABASE',
-        'USER':'posgres',
-        'PASSWORD':'#Profiler#',
-        'HOST':'localhost',
-        'PORT':'5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'USER':'posgres',
+        # 'PASSWORD':'#Profiler#',
+        # 'HOST':'localhost',
+        # 'PORT':'5432'
     }
 }
 
@@ -140,7 +140,7 @@ USE_THOUSAND_SEPARATOR = True
 
 DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 
-AUTH_USER_MODEL = 'users.User' 
+AUTH_USER_MODEL = 'main.Utilisateur' 
 
 # SERVICE EMAIL ET SMTP
 

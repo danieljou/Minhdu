@@ -1,4 +1,4 @@
-{% extends 'base2.html' %}
+ {% extends 'base2.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 
@@ -70,9 +70,9 @@
 
             </div>
             <div class="mb-3p">
-              {{ formDemandeur.Situation_famille|as_crispy_field}}
+              {{ formDemandeur.Situation_matrimoniale|as_crispy_field}}
               <i class="icopp fas fa-user-friends    "></i>
-            </div>
+            </div> 
             <div class="">
               <div class="mb-3p">
                 {{ formDemandeur.Profession|as_crispy_field}}
@@ -103,10 +103,10 @@
               {{ formDemandeur.Email|as_crispy_field}}
               <i class="icopp fas fa-mail-bulk    "></i>
             </div>
-            <div class="mb-3p">
+            {% comment %} <div class="mb-3p">
               {{ formDemandeur.Tel|as_crispy_field}}
               <i class="fa fa-phone icopp" aria-hidden="true"></i>
-            </div>
+            </div> {% endcomment %}
             <div class="mb-3p">
               {{ formDemandeur.Numero_identite|as_crispy_field}}
               <i class="icopp fas fa-user"></i>
@@ -161,7 +161,7 @@
 
         <div class="card mt-3" id="revenuconjoint">
           <h4 class="card-header">Revenu du conjoint</h4>
-          <div class="card-body">
+          {% comment %} <div class="card-body">
 
             <div class="mb-3p">
               {{ formRevenuFemme.Nature |as_crispy_field}}
@@ -173,10 +173,10 @@
               <i class="icopp fas fa-money-bill"></i>
             </div>
              
-          </div>
+          </div> {% endcomment %}
         </div>
 
-        <div class="card mt-3">
+        {% comment %} <div class="card mt-3">
           <h4 class="card-header">Enfant légitime </h4>
           <div class="card-body">
             <div class="mb-3p">
@@ -203,7 +203,7 @@
             <div class="mb-3p">
               {{ formEnfant_legitime.Niveau_scolaire_ou_profession  |as_crispy_field}}
               <i class="icopp fa fa-graduation-cap" aria-hidden="true"></i>
-            </div>
+            </div> {% endcomment %}
 
              
           </div>
@@ -229,12 +229,12 @@
     <div class="row">
       <div class="col-md-12">
         
-        <div class="card mt-4" id="formconjoint">
+        {% comment %} <div class="card mt-4" id="formconjoint">
           <h4 class="card-header">Formulaire conjoint</h4>
           <div class="card-body">
              {{ formConjoint |crispy}}
           </div>
-        </div>
+        </div> {% endcomment %}
       </div>
       <div class="col-md-12">
         <div class="card mt-3">

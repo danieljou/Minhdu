@@ -5,13 +5,14 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
+
 
 
 
 from django.core.exceptions import ValidationError
 
-class Demande(models.Model):
+class Demandeur(models.Model):
 
     MONSIEUR = 'M.'
     MADAME = 'Mme'
@@ -69,9 +70,9 @@ class Demande(models.Model):
     Mis_a_jour = models.DateTimeField(auto_now=True)
     Publie_le = models.DateTimeField(auto_now_add = True)
     slug = models.SlugField (max_length=100, unique=True)
-    createur = models.ForeignKey('users.User', blank = True, on_delete=models.CASCADE, related_name='createur')
+    createur = models.ForeignKey('main.Utilisateur', blank = True, on_delete=models.CASCADE, related_name='createur')
     Etat_demandes = models.BooleanField(default = False)
-    revenu = models.ForeignKey("Revenu", verbose_name=_(""), on_delete=models.CASCADE)
+    revenu = models.ForeignKey("Revenu_mensuel",  on_delete=models.CASCADE)
 
     PiecesTotale = 4
     PieceManquantes = []
@@ -99,161 +100,161 @@ class Demande(models.Model):
         self.slug = self.slug.replace(" ", "_")
         super(Demandeur, self).save(*args, **kwargs)    
 
-    def getPieceNumber(self):
-        nbPieces = 0
-        state = False
-        self.PieceManquantes = []
-        self.PiecesTotale = 4
-        if(self.Fichiers_joint.Demande_logement):
-            nbPieces = nbPieces + 1 
-            state = True  
-        else:
+    # def getPieceNumber(self):
+    #     nbPieces = 0
+    #     state = False
+    #     self.PieceManquantes = []
+    #     self.PiecesTotale = 4
+    #     if(self.Fichiers_joint.Demande_logement):
+    #         nbPieces = nbPieces + 1 
+    #         state = True  
+    #     else:
             
-            state = False
-            self.PieceManquantes.append('Demande de logement')
+    #         state = False
+    #         self.PieceManquantes.append('Demande de logement')
 
-        # 
-        if(self.Fichiers_joint.Cni_demandeur):
-            nbPieces = nbPieces + 1
-            state = True
-        else:
+    #     # 
+    #     if(self.Fichiers_joint.Cni_demandeur):
+    #         nbPieces = nbPieces + 1
+    #         state = True
+    #     else:
             
-            state = False
-            self.PieceManquantes.append('CNI Demandeur')
+    #         state = False
+    #         self.PieceManquantes.append('CNI Demandeur')
 
-        # 
+    #     # 
 
-        if(self.Fichiers_joint.Cni_conjoint):
-            nbPieces = nbPieces + 1
-            state = True
-        else:
-            if self.Civilite == 'NT':
-                self.PieceManquantes.append('CNI conjoint')
-                state = False
-                self.PiecesTotale = self.PiecesTotale + 1 
+    #     if(self.Fichiers_joint.Cni_conjoint):
+    #         nbPieces = nbPieces + 1
+    #         state = True
+    #     else:
+    #         if self.Civilite == 'NT':
+    #             self.PieceManquantes.append('CNI conjoint')
+    #             state = False
+    #             self.PiecesTotale = self.PiecesTotale + 1 
         
-        # 
+    #     # 
 
-        if(self.Fichiers_joint.Acte_naissance):
-            nbPieces = nbPieces + 1
-        else:
-            self.PieceManquantes.append('Acte de naissance')
+    #     if(self.Fichiers_joint.Acte_naissance):
+    #         nbPieces = nbPieces + 1
+    #     else:
+    #         self.PieceManquantes.append('Acte de naissance')
 
-        # 
-        if(self.Fichiers_joint.Acte_mariage):
-            nbPieces = nbPieces + 1
-            state = True
-        else:
-            if(self.Conjoint_vie):
-                self.PieceManquantes.append('Acte de mariage')
-                state = False
-                self.PiecesTotale = self.PiecesTotale + 1 
-            else:
-                state = True
+    #     # 
+    #     if(self.Fichiers_joint.Acte_mariage):
+    #         nbPieces = nbPieces + 1
+    #         state = True
+    #     else:
+    #         if(self.Conjoint_vie):
+    #             self.PieceManquantes.append('Acte de mariage')
+    #             state = False
+    #             self.PiecesTotale = self.PiecesTotale + 1 
+    #         else:
+    #             state = True
 
-        if(self.Fichiers_joint.Acte_deces_conjoint):
-            nbPieces = nbPieces + 1
-            state = True
-        else:
-            if(self.Civilite == 'VE'):
-                state = False
-                self.PieceManquantes.append('Acte de deccès conjoint')
-                self.PiecesTotale = self.PiecesTotale + 1 
+    #     if(self.Fichiers_joint.Acte_deces_conjoint):
+    #         nbPieces = nbPieces + 1
+    #         state = True
+    #     else:
+    #         if(self.Civilite == 'VE'):
+    #             state = False
+    #             self.PieceManquantes.append('Acte de deccès conjoint')
+    #             self.PiecesTotale = self.PiecesTotale + 1 
 
-        if(self.Fichiers_joint.Certificat_celibat):
-            nbPieces = nbPieces + 1
-            state = True
-        else:
-            if(self.Civilite == 'CE'):
-                state = False
-                self.PieceManquantes.append('Certificat de célibat')
-                self.PiecesTotale = self.PiecesTotale + 1 
+    #     if(self.Fichiers_joint.Certificat_celibat):
+    #         nbPieces = nbPieces + 1
+    #         state = True
+    #     else:
+    #         if(self.Civilite == 'CE'):
+    #             state = False
+    #             self.PieceManquantes.append('Certificat de célibat')
+    #             self.PiecesTotale = self.PiecesTotale + 1 
 
-        if(self.Fichiers_joint.Attestation_travail):
-            nbPieces = nbPieces + 1
-            state = True
-        else:
-            self.PieceManquantes.append('Attestation de travail')
-            state = False
+    #     if(self.Fichiers_joint.Attestation_travail):
+    #         nbPieces = nbPieces + 1
+    #         state = True
+    #     else:
+    #         self.PieceManquantes.append('Attestation de travail')
+    #         state = False
 
-        if(self.Fichiers_joint.Attestation_presence_effective_cfc):
-            nbPieces = nbPieces + 1
-            state = True
-        else:
-            if(self.Type_paiement == 'CFC'):
-                state = False
-                self.PieceManquantes.append('Attestion de présence effective au cfc')
-                self.PicesManquantesCfc.append('Attestion de présence effective au cfc')
-                self.PiecesTotale = self.PiecesTotale + 1 
+    #     if(self.Fichiers_joint.Attestation_presence_effective_cfc):
+    #         nbPieces = nbPieces + 1
+    #         state = True
+    #     else:
+    #         if(self.Type_paiement == 'CFC'):
+    #             state = False
+    #             self.PieceManquantes.append('Attestion de présence effective au cfc')
+    #             self.PicesManquantesCfc.append('Attestion de présence effective au cfc')
+    #             self.PiecesTotale = self.PiecesTotale + 1 
 
-        if(self.Fichiers_joint.Bulletin_paie1_cfc):
-            nbPieces = nbPieces + 1
-        else:
-            if(self.Type_paiement == 'CFC'):
-                state = False
-                self.PieceManquantes.append('Bulletin de paie 1 cfc')
-                self.PicesManquantesCfc.append('Bulletin de paie 1 cfc')
-                self.PiecesTotale = self.PiecesTotale + 1  
+    #     if(self.Fichiers_joint.Bulletin_paie1_cfc):
+    #         nbPieces = nbPieces + 1
+    #     else:
+    #         if(self.Type_paiement == 'CFC'):
+    #             state = False
+    #             self.PieceManquantes.append('Bulletin de paie 1 cfc')
+    #             self.PicesManquantesCfc.append('Bulletin de paie 1 cfc')
+    #             self.PiecesTotale = self.PiecesTotale + 1  
 
-        if(self.Fichiers_joint.Bulletin_paie2_cfc):
-            nbPieces = nbPieces + 1
-            state = True
-        else:
-            if(self.Type_paiement == 'CFC'):
-                state = False
-                self.PieceManquantes.append('Bulletin de paie 2 cfc')
-                self.PicesManquantesCfc.append('Bulletin de paie 2 cfc')
-                self.PiecesTotale = self.PiecesTotale + 1 
+    #     if(self.Fichiers_joint.Bulletin_paie2_cfc):
+    #         nbPieces = nbPieces + 1
+    #         state = True
+    #     else:
+    #         if(self.Type_paiement == 'CFC'):
+    #             state = False
+    #             self.PieceManquantes.append('Bulletin de paie 2 cfc')
+    #             self.PicesManquantesCfc.append('Bulletin de paie 2 cfc')
+    #             self.PiecesTotale = self.PiecesTotale + 1 
 
-        if(self.Fichiers_joint.Bulletin_paie3_cfc):
-            nbPieces = nbPieces + 1
-            state = True
-        else:
-            if(self.Type_paiement == 'CFC'):
-                state = False
-                self.PieceManquantes.append('Bulletin de paie 3 cfc')
-                self.PicesManquantesCfc.append('Bulletin de paie 3 cfc')
-                self.PiecesTotale = self.PiecesTotale + 1 
+    #     if(self.Fichiers_joint.Bulletin_paie3_cfc):
+    #         nbPieces = nbPieces + 1
+    #         state = True
+    #     else:
+    #         if(self.Type_paiement == 'CFC'):
+    #             state = False
+    #             self.PieceManquantes.append('Bulletin de paie 3 cfc')
+    #             self.PicesManquantesCfc.append('Bulletin de paie 3 cfc')
+    #             self.PiecesTotale = self.PiecesTotale + 1 
 
-        if(self.Fichiers_joint.Recu_paiement_frais_dossier):
-            nbPieces = nbPieces + 1
-        else:
-            state = False
-            self.PieceManquantes.append('Reçu de paiement des fraix de dossier')
-            self.PiecesTotale = self.PiecesTotale + 1 
+    #     if(self.Fichiers_joint.Recu_paiement_frais_dossier):
+    #         nbPieces = nbPieces + 1
+    #     else:
+    #         state = False
+    #         self.PieceManquantes.append('Reçu de paiement des fraix de dossier')
+    #         self.PiecesTotale = self.PiecesTotale + 1 
             
-        if(self.Fichiers_joint.Engagement_sur_honneur_occup_pers):
-            nbPieces = nbPieces + 1
-            state = True
-        else:
-            state = False
-            self.PieceManquantes.append('Engagement sur honneur')
-            self.PiecesTotale = self.PiecesTotale + 1 
+    #     if(self.Fichiers_joint.Engagement_sur_honneur_occup_pers):
+    #         nbPieces = nbPieces + 1
+    #         state = True
+    #     else:
+    #         state = False
+    #         self.PieceManquantes.append('Engagement sur honneur')
+    #         self.PiecesTotale = self.PiecesTotale + 1 
 
-        if(self.Fichiers_joint.Engagement_sur_honneur_payer_apport_perso_cfc):
-            nbPieces = nbPieces + 1
-            state = True
-        else:
-            if(self.Type_paiement == 'CASH'):
-                state = False
-                self.PieceManquantes.append('Engamement su honneur de paiement par apport personnel')
+    #     if(self.Fichiers_joint.Engagement_sur_honneur_payer_apport_perso_cfc):
+    #         nbPieces = nbPieces + 1
+    #         state = True
+    #     else:
+    #         if(self.Type_paiement == 'CASH'):
+    #             state = False
+    #             self.PieceManquantes.append('Engamement su honneur de paiement par apport personnel')
                 
-                self.PiecesTotale = self.PiecesTotale + 1 
+    #             self.PiecesTotale = self.PiecesTotale + 1 
 
-        if(self.Fichiers_joint.Engagement_sur_honneur_payer_comptant_cfc):
-            nbPieces = nbPieces + 1
-        else:
-            if(self.Type_paiement == 'CFC'):
-                state = False
-                self.PieceManquantes.append('Engamement su honneur de paiement CFC')
-                self.PicesManquantesCfc.append('Engamement su honneur de paiement CFC')
-                self.PiecesTotale = self.PiecesTotale + 1 
+    #     if(self.Fichiers_joint.Engagement_sur_honneur_payer_comptant_cfc):
+    #         nbPieces = nbPieces + 1
+    #     else:
+    #         if(self.Type_paiement == 'CFC'):
+    #             state = False
+    #             self.PieceManquantes.append('Engamement su honneur de paiement CFC')
+    #             self.PicesManquantesCfc.append('Engamement su honneur de paiement CFC')
+    #             self.PiecesTotale = self.PiecesTotale + 1 
 
-        return nbPieces
+    #     return nbPieces
 
     def getState(self):
-        if(self.getPieceNumber == self.PiecesTotale):
-            return 'Complet'
+        # if(self.getPieceNumber == self.PiecesTotale):
+        #     return 'Complet'
         return  'Incomplet'
 
     def getTotalPieces(self):
@@ -275,8 +276,8 @@ class Conjoint(models.Model):
     
     Nom_banque_conjoint = models.ForeignKey("Banque", on_delete=models.SET_NULL, null = True, blank = True)
     Revenu = models.ForeignKey('Revenu_mensuel', on_delete=models.CASCADE)
-    demande = models.ForeignKey("Demande", related_name = 'demande_conjoint', on_delete=models.CASCADE)
-    Cni = models.ImageField(upload_to='Cni_conjoint')
+    demande = models.ForeignKey("Demandeur", related_name = 'demande_conjoint', on_delete=models.CASCADE)
+    Cni = models.ImageField(upload_to='Cni_conjoint', blank=True, null=True)
 
     def __str__(self):
         return '{}  -  {}'.format(self.Nom_conjoint, self.Prenom_conjoint)
@@ -296,7 +297,7 @@ class Enfant_legitime(models.Model):
     Date_naiss = models.DateField(null=True , blank = True)
     Lieu_naiss = models.ForeignKey("Ville", related_name = 'lieunaiss_enf' , on_delete=models.SET_NULL, null = True, blank = True)
     Niveau_scolaire_ou_profession = models.CharField(max_length=50 , null=True , blank = True)
-    parent = models.ForeignKey("Demande", related_name = 'demande_parent', on_delete=models.CASCADE)
+    parent = models.ForeignKey("Demandeur", related_name = 'demande_parent', on_delete=models.CASCADE)
 
     def __str__(self):
         return '{} {}'.format(self.Nom, self.Prenom)
@@ -305,7 +306,7 @@ class Engagement_Financier(models.Model): # ok
     Banque = models.ForeignKey("Banque", on_delete=models.SET_NULL, null = True)
     Montant = models.IntegerField(null=False)
     date_de_fin = models.DateField(null=False)
-    demande = models.ForeignKey("Demande", related_name = 'demande_engagement_financier', on_delete=models.CASCADE)
+    demande = models.ForeignKey("Demandeur", related_name = 'demande_engagement_financier', on_delete=models.CASCADE)
     
 class Revenu_mensuel(models.Model): # ok
     #Nature des revenus
@@ -326,7 +327,7 @@ class Engagement_Client(models.Model): #ok
     Type_logement = models.CharField(max_length=80, null=False)
     Prix_vente = models.IntegerField(null=False)
     Depot_garantie_disponible = models.BooleanField(default=True)
-    demande = models.ForeignKey("Demande", related_name = 'demande_engagement_client', on_delete=models.CASCADE)
+    demande = models.ForeignKey("Demandeur", related_name = 'demande_engagement_client', on_delete=models.CASCADE)
 
    
 class Pieces_Jointes(models.Model): #ok
@@ -345,7 +346,7 @@ class Pieces_Jointes(models.Model): #ok
     Engagement_sur_honneur_occup_pers = models.ImageField(null = True, blank = True,  upload_to='Engagement_sur_honneur_occup_pers')
     Engagement_sur_honneur_payer_apport_perso_cfc = models.ImageField(null = True, blank = True,  upload_to='Engagement_sur_honneur_payer_apport_perso_cfc')
     Engagement_sur_honneur_payer_comptant_cfc = models.ImageField(null = True, blank = True,  upload_to='Engagement_sur_honneur_payer_comptant_cfc')
-    demande = models.ForeignKey("Demande", related_name = 'demande_pieces_jointes', on_delete=models.CASCADE)
+    demande = models.ForeignKey("Demandeur", related_name = 'demande_pieces_jointes', on_delete=models.CASCADE)
 
 
 class Decision_comite_attribution(models.Model):  #  perfect
@@ -441,7 +442,7 @@ class Appartement(models.Model):
     
     is_empy = True
     def __str__(self):
-        return str(self.Num_logement)
+        return str(self.Numero)
 
     def get_if_empty(self):
         if self.Vide:
@@ -478,7 +479,7 @@ class Employeur(models.Model):
 
 
 class Accord_cfc(models.Model):
-    demande = models.OneToOneField("Demande", related_name = 'demande', on_delete=models.CASCADE, null = True)
+    demande = models.OneToOneField("Demandeur", related_name = 'demande', on_delete=models.CASCADE, null = True)
     confirmation_de_conformilte = models.BooleanField()
     commentaire = models.TextField(null = True, blank = True)
     Justificatif = models.ImageField(upload_to='demandeok',null = True, blank = True)
@@ -493,5 +494,5 @@ class Utilisateur(AbstractUser):
     )
 
     role = models.CharField( max_length=50, choices = role_choices)
-    Avatar = models.ImageField(upload_to='avatars', null = True)
+    # Avatar = models.ImageField(upload_to='avatars', null = True)
 
