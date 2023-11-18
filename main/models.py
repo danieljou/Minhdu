@@ -448,7 +448,9 @@ class Appartement(models.Model):
         if self.Vide:
             return True
         return False
-        
+
+
+
 
 class Ville(models.Model):
     Nom_ville = models.CharField(max_length=50)

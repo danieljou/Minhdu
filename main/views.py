@@ -730,6 +730,8 @@ def addbanque(request):
             
         }, status = 200)
 
+
+
 @login_required
 @is_gestionnaire_required
 def addempoyeur(request):
