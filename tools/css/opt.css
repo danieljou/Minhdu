@@ -1,9 +1,0 @@
-.confgure{
-    font-size: 50px;
-    margin: 10px;
-    color: rgba(0, 0, 0, 0.53);
-}
-.hoveropt:hover .confgure{
-    color: white;
-    transition: .5s;
-}
